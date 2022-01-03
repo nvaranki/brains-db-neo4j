@@ -12,7 +12,7 @@ import java.util.List;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
-import static com.varankin.brains.db.type.DbАтрибутный.toStringValue;
+import static com.varankin.brains.db.DbПреобразователь.toStringValue;
 
 /**
  * Расширенное название пространства имен XML в Neo4j.

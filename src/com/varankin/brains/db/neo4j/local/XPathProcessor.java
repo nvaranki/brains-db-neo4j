@@ -4,6 +4,7 @@ import com.varankin.brains.db.type.DbАтрибутный;
 import com.varankin.brains.db.type.DbЗона;
 import com.varankin.brains.db.xml.PiProcessor;
 import com.varankin.brains.db.xml.XmlBrains;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -13,7 +14,7 @@ import java.util.logging.*;
 import org.neo4j.graphdb.*;
 
 import static com.varankin.brains.db.neo4j.local.Architect.*;
-import static com.varankin.brains.db.type.DbАтрибутный.*;
+import static com.varankin.brains.db.DbПреобразователь.*;
 
 /**
  * Процессор инструкций XML (Processing Instructions) типа XPath для Neo4j.
@@ -151,7 +152,7 @@ class XPathProcessor implements PiProcessor<Node>
             }
             else if( tokens.length == 2 )
             {
-                if( !unquote( tokens[1] ).equals(DbАтрибутный.toStringValue( 
+                if( !unquote( tokens[1] ).equals(toStringValue( 
                         node.getProperty( tokens[0], null ) ) ) )
                     return null;
             }

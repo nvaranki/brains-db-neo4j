@@ -6,7 +6,7 @@ import com.varankin.brains.db.xml.type.XmlПараметр;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
-import static com.varankin.brains.db.type.DbАтрибутный.*;
+import static com.varankin.brains.db.DbПреобразователь.*;
 
 /**
  * Параметр настройки экземпляра {@linkplain Object объекта} в Neo4j.

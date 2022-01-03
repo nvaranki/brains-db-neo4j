@@ -6,7 +6,7 @@ import com.varankin.brains.db.xml.type.XmlСигнал;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
-import static com.varankin.brains.db.type.DbАтрибутный.*;
+import static com.varankin.brains.db.DbПреобразователь.*;
 
 /**
  * Сигнал, формируемый по результату расчета когнитивной функции, в Neo4j.

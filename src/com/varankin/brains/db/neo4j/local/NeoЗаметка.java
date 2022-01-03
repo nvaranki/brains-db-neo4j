@@ -8,7 +8,7 @@ import com.varankin.brains.db.xml.type.XmlЗаметка;
 
 import org.neo4j.graphdb.*;
 
-import static com.varankin.brains.db.type.DbАтрибутный.*;
+import static com.varankin.brains.db.DbПреобразователь.*;
 
 /**
  * Произвольный текст к фрагменту мыслительной структуры в Neo4j.

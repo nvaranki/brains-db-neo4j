@@ -16,13 +16,13 @@ import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.graphdb.index.Index;
 import org.neo4j.graphdb.index.IndexManager;
 
-import static com.varankin.brains.db.type.DbАтрибутный.*;
+import static com.varankin.brains.db.DbПреобразователь.*;
 import static com.varankin.brains.db.xml.Xml.*;
 
 /**
  * Utility container for Neo4j&trade;.
  * 
- * @author &copy; 2019 Николай Варанкин
+ * @author &copy; 2021 Николай Варанкин
  */
 final class Architect
 {

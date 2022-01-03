@@ -27,7 +27,7 @@ import java.util.function.Supplier;
 import java.util.logging.*;
 import java.util.LinkedList;
 
-import static com.varankin.brains.db.type.DbАтрибутный.*;
+import static com.varankin.brains.db.DbПреобразователь.*;
 import static com.varankin.brains.db.neo4j.local.Architect.*;
 import static com.varankin.brains.db.neo4j.local.NeoЭлемент.КЛЮЧ_А_НАЗВАНИЕ;
 import static com.varankin.brains.db.xml.XmlBrains.XML_BRAINS;

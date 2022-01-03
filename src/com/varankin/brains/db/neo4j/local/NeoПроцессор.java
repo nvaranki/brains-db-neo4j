@@ -6,7 +6,7 @@ import com.varankin.brains.db.xml.type.XmlПроцессор;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.GraphDatabaseService;
 
-import static com.varankin.brains.db.type.DbАтрибутный.*;
+import static com.varankin.brains.db.DbПреобразователь.*;
 
 /**
  * Активный элемент мыслительной структуры в Neo4j.

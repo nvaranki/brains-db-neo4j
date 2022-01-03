@@ -8,7 +8,7 @@ import com.varankin.brains.db.xml.type.XmlПакет;
 
 import org.neo4j.graphdb.*;
 
-import static com.varankin.brains.db.type.DbАтрибутный.toStringValue;
+import static com.varankin.brains.db.DbПреобразователь.toStringValue;
 
 /**
  * Пакет из проектов и библиотек мыслительных структур на базе Neo4j.

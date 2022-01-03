@@ -20,7 +20,7 @@ import java.util.function.Consumer;
 import java.util.logging.*;
 import org.neo4j.graphdb.*;
 
-import static com.varankin.brains.db.type.DbАтрибутный.*;
+import static com.varankin.brains.db.DbПреобразователь.*;
 import static com.varankin.brains.db.neo4j.local.Architect.createArchiveNode;
 import static com.varankin.brains.db.neo4j.local.Architect.findSingleNode;
 import static com.varankin.brains.db.neo4j.local.NeoАтрибутный.trimToCharArray;

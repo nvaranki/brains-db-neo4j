@@ -10,7 +10,7 @@ import java.util.logging.*;
 import org.neo4j.graphdb.*;
 
 import static com.varankin.brains.db.neo4j.local.Architect.*;
-import static com.varankin.brains.db.type.DbАтрибутный.*;
+import static com.varankin.brains.db.DbПреобразователь.*;
 
 /**
  * Фрагмент {@linkplain Соединение соединения} для приема-передачи

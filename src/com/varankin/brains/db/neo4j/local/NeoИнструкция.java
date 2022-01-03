@@ -7,7 +7,7 @@ import com.varankin.brains.db.xml.type.XmlИнструкция;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
-import static com.varankin.brains.db.type.DbАтрибутный.*;
+import static com.varankin.brains.db.DbПреобразователь.*;
 
 /**
  * Инструкция для обработки в Neo4j.

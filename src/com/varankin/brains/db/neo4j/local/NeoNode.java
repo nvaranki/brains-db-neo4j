@@ -1,19 +1,20 @@
 package com.varankin.brains.db.neo4j.local;
 
 import com.varankin.brains.db.Транзакция;
-import com.varankin.util.LoggerX;
-import org.neo4j.graphdb.*;
-
-import com.varankin.brains.db.type.DbАтрибутный;
 import com.varankin.brains.db.xml.ЗонныйКлюч;
 import com.varankin.brains.db.xml.МаркированныйЗонныйКлюч;
+import com.varankin.util.LoggerX;
+
 import java.util.Objects;
 import java.util.logging.Level;
+import org.neo4j.graphdb.*;
+
+import static com.varankin.brains.db.DbПреобразователь.toStringValue;
 
 /**
  * Объект на базе узла Neo4j.
  * 
- * @author &copy; 2020 Николай Варанкин
+ * @author &copy; 2021 Николай Варанкин
  */
 abstract class NeoNode 
 {
@@ -75,7 +76,7 @@ abstract class NeoNode
         for( Node node = Architect.getParentNode( getNode() ); node != null; 
                 node = Architect.getParentNode( node ) )
         {
-            String name = DbАтрибутный.toStringValue( node.getProperty( property, null ) );
+            String name = toStringValue( node.getProperty( property, null ) );
             if( value != null ? value.equals( name ) : name == null )
                 return node;
         }

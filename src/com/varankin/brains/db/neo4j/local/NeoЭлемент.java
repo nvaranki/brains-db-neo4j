@@ -11,7 +11,7 @@ import com.varankin.brains.db.xml.ЗонныйКлюч;
 import java.util.*;
 import org.neo4j.graphdb.*;
 
-import static com.varankin.brains.db.type.DbАтрибутный.*;
+import static com.varankin.brains.db.DbПреобразователь.*;
 
 /**
  * Основа элемента мыслительной структуры в Neo4j.

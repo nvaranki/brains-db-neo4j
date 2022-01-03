@@ -1,12 +1,13 @@
 package com.varankin.brains.db.neo4j.local;
 
-import com.varankin.brains.db.type.DbАтрибутный;
 import com.varankin.brains.db.xml.XmlBrains;
 import com.varankin.io.xml.svg.XmlSvg;
+
 import java.util.*;
 import java.util.logging.*;
 import org.neo4j.graphdb.*;
 
+import static com.varankin.brains.db.DbПреобразователь.toStringValue;
 import static com.varankin.brains.db.neo4j.local.Architect.*;
 
 /**
@@ -107,7 +108,7 @@ class XLinkProcessor
         {
             Node next = r.getEndNode();
             Object x = next.getProperty( XmlSvg.SVG_ATTR_ID, null );
-            if( id.equals( DbАтрибутный.toStringValue( x ) ) )
+            if( id.equals( toStringValue( x ) ) )
                 return next;
         }
         return null;
@@ -124,7 +125,7 @@ class XLinkProcessor
             }
             else if( tokens.length == 2 )
             {
-                if( !unquote( tokens[1] ).equals(DbАтрибутный.toStringValue( 
+                if( !unquote( tokens[1] ).equals(toStringValue( 
                         node.getProperty( tokens[0], null ) ) ) )
                     return null;
             }

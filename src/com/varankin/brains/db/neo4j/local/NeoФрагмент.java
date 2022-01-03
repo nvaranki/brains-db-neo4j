@@ -5,7 +5,7 @@ import com.varankin.brains.db.xml.type.XmlФрагмент;
 
 import org.neo4j.graphdb.*;
 
-import static com.varankin.brains.db.type.DbАтрибутный.*;
+import static com.varankin.brains.db.DbПреобразователь.*;
 
 /**
  * Фрагмент повторно используемой мыслительной структуры в Neo4j.

@@ -6,7 +6,7 @@ import com.varankin.brains.db.xml.type.XmlТочка;
 
 import org.neo4j.graphdb.*;
 
-import static com.varankin.brains.db.type.DbАтрибутный.*;
+import static com.varankin.brains.db.DbПреобразователь.*;
 
 /**
  * Фрагмент схемы расчета в Neo4j
