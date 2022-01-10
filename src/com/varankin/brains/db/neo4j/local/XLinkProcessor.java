@@ -8,7 +8,6 @@ import java.util.logging.*;
 import org.neo4j.graphdb.*;
 
 import static com.varankin.brains.db.DbПреобразователь.toStringValue;
-import static com.varankin.brains.db.neo4j.local.Architect.*;
 
 /**
  * Процессор ссылок в стандарте {@literal Xlink}. 
@@ -206,7 +205,7 @@ class XLinkProcessor
 
     private static Object название( Node node ) 
     {
-        Object property = node.getProperty( P_NODE_NAME, null );
+        Object property = node.getProperty( Architect.P_NODE_NAME, null );
         return property instanceof char[] ? String.valueOf( (char[])property ) : property;
     }
     

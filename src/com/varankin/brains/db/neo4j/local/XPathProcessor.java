@@ -1,6 +1,5 @@
 package com.varankin.brains.db.neo4j.local;
 
-import com.varankin.brains.db.type.DbАтрибутный;
 import com.varankin.brains.db.type.DbЗона;
 import com.varankin.brains.db.xml.PiProcessor;
 import com.varankin.brains.db.xml.XmlBrains;
@@ -13,7 +12,6 @@ import java.util.LinkedList;
 import java.util.logging.*;
 import org.neo4j.graphdb.*;
 
-import static com.varankin.brains.db.neo4j.local.Architect.*;
 import static com.varankin.brains.db.DbПреобразователь.*;
 
 /**
@@ -67,7 +65,7 @@ class XPathProcessor implements PiProcessor<Node>
                     for( Node n : new ArrayList<>( варианты ) )
                     {
                         варианты.remove( n );
-                        варианты.add( getParentNode( n ) );
+                        варианты.add( Architect.getParentNode( n ) );
                     }
                     break;
                     
