@@ -3,6 +3,7 @@ package com.varankin.brains.db.neo4j.local;
 import com.varankin.brains.db.type.DbГрафика;
 import com.varankin.brains.db.xml.XLinkActuate;
 import com.varankin.brains.db.xml.XLinkShow;
+import com.varankin.brains.db.xml.type.XmlГрафика;
 import com.varankin.brains.db.Коллекция;
 import com.varankin.brains.db.xml.ЗонныйКлюч;
 import com.varankin.io.xml.svg.XmlSvg;
@@ -18,7 +19,7 @@ import org.neo4j.graphdb.Node;
  * 
  * @author &copy; 2021 Николай Варанкин
  */
-public class NeoГрафика extends NeoУзел implements DbГрафика
+public class NeoГрафика extends NeoУзел implements DbГрафика, XmlГрафика
 {
     private static final LoggerX LOGGER = LoggerX.getLogger( NeoГрафика.class );
     private static final Collection<String> XMLNS_URI = Arrays.asList( XmlSvg.XMLNS_SVG );
