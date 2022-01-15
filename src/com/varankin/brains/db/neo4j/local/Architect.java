@@ -18,6 +18,7 @@ import org.neo4j.graphdb.index.IndexManager;
 
 import static com.varankin.brains.db.DbПреобразователь.*;
 import static com.varankin.brains.db.xml.Xml.*;
+import com.varankin.brains.db.xml.type.XmlАрхив;
 
 /**
  * Utility container for Neo4j&trade;.
@@ -111,7 +112,7 @@ final class Architect
         Node node = сервис.createNode();
         Long ts = System.currentTimeMillis();
         node.setProperty( P_NODE_NAME, XmlBrains.XML_ARHIVE.toCharArray() );
-        node.setProperty( XmlBrains.XML_CREATED, ts );
+        node.setProperty( XmlАрхив.КЛЮЧ_А_СОЗДАН.НАЗВАНИЕ, ts );
 
         node.setProperty( MASTER_PROPERTY, ts );
         Architect.indexArchiveNode( node, ts );

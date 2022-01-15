@@ -3,10 +3,12 @@ package com.varankin.brains.db.neo4j.local;
 import com.varankin.brains.db.type.DbКонтакт;
 import com.varankin.brains.db.type.DbСигнал;
 import com.varankin.brains.db.xml.type.XmlКонтакт;
-import com.varankin.brains.db.xml.XmlBrains;
+import com.varankin.brains.db.xml.type.XmlСигнал;
+import com.varankin.brains.db.xml.type.XmlФрагмент;
 import com.varankin.util.LoggerX;
 
 import java.util.logging.*;
+import java.util.Objects;
 import org.neo4j.graphdb.*;
 
 import static com.varankin.brains.db.neo4j.local.Architect.*;
@@ -51,12 +53,13 @@ final class NeoКонтакт extends NeoЭлементВП implements DbКон�
         if( название != null )
         {
             Node n = getParentNode( getParentNode( getNode(), Связь.Контакт ) );
-            if( XmlBrains.XML_FRAGMENT.equals( getDescriptor( new NeoУзел( n ) ).название() ) )
-                n = getParentNode( n );
+            if( Objects.equals( XmlФрагмент.КЛЮЧ_Э_ФРАГМЕНТ.НАЗВАНИЕ, getDescriptor( new NeoУзел( n ) ).НАЗВАНИЕ ) )
+                n = getParentNode( n ); // у фрагмента нет своих сигналов
+            // поиск в произвольном владельце сигналов
             for( Relationship r : n.getRelationships( Direction.OUTGOING, Связь.Сигнал ) )
             {
                 Node s = r.getEndNode();
-                if( название.equals( toStringValue( s.getProperty( XmlBrains.BRAINS_ATTR_NAME, null ) ) ) )
+                if( название.equals( toStringValue( s.getProperty( XmlСигнал.КЛЮЧ_А_НАЗВАНИЕ.НАЗВАНИЕ, null ) ) ) )
                     return new NeoСигнал( s );
             }
         }
