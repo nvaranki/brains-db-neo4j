@@ -19,6 +19,7 @@ import org.neo4j.graphdb.index.IndexManager;
 import static com.varankin.brains.db.DbПреобразователь.*;
 import static com.varankin.brains.db.xml.Xml.*;
 import com.varankin.brains.db.xml.type.XmlАрхив;
+import com.varankin.brains.db.xml.ЗонныйКлюч;
 
 /**
  * Utility container for Neo4j&trade;.
@@ -273,11 +274,24 @@ final class Architect
         Фильтр<МаркированныйЗонныйКлюч> фильтр = (ключ) -> 
         {
             String название = ключ.название();
-            return !( название != null && название.startsWith( "#" ) );
+            return название != null && !( название.startsWith( "#" ) );
         };
-        МаркированныйЗонныйКлюч тип = new NeoАтрибутный( node ){}.тип();
+        ЗонныйКлюч тип = new NeoАтрибутный( node ){}.тип();
+        Iterator<Relationship> nsri = node.getRelationships( Direction.INCOMING, NameSpace.Узел ).iterator();
+        String префикс = null;
+        if( nsri.hasNext() )
+        {
+            NeoЗона nsn = new NeoЗона( nsri.next().getStartNode() );
+            if( nsri.hasNext() ) throw new IllegalStateException( nsn.uri() );
+            префикс = nsn.название();
+        }
+        else
+        {
+            //TODO префикс на brains
+        }
+        МаркированныйЗонныйКлюч мтип = new МаркированныйЗонныйКлюч( тип.НАЗВАНИЕ, тип.ЗОНА, префикс);
         return new FilteredIterable<>( () -> new LocalPropertyKeysIterator( 
-                node.getPropertyKeys().iterator(), тип ), фильтр );
+                node.getPropertyKeys().iterator(), мтип ), фильтр );
     }
     
     static Iterable<МаркированныйЗонныйКлюч> getForeignPropertyKeys( final Node node )
@@ -401,8 +415,8 @@ final class Architect
         LocalPropertyKeysIterator( Iterator<String> iterator, МаркированныйЗонныйКлюч тип )
         {
             ITERATOR = iterator;
-            URI = тип.uri();
-            PREFIX = тип.название();
+            URI = тип.ЗОНА;
+            PREFIX = тип.PREFIX;
         }
         
         @Override

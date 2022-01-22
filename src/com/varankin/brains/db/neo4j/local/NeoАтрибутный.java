@@ -35,7 +35,7 @@ import static com.varankin.brains.db.xml.XmlBrains.XML_BRAINS;
 /**
  * Атрибутный узел графа в Neo4j.
  * 
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 abstract class NeoАтрибутный extends NeoNode implements DbАтрибутный 
 {
@@ -53,9 +53,9 @@ abstract class NeoАтрибутный extends NeoNode implements DbАтрибу
     }
 
     @Override
-    public final МаркированныйЗонныйКлюч тип() 
+    public final ЗонныйКлюч тип() 
     {
-        return getDescriptor( this );
+        return getDescriptor( this ); //TODO get from XmlXXX interfaces
     }
 
     @Override

@@ -17,7 +17,7 @@ import org.neo4j.graphdb.Node;
  * Произвольный узел структуры данных в Neo4j, предназначенный для
  * визуального отображения.
  * 
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 public class NeoГрафика extends NeoУзел implements DbГрафика, XmlГрафика
 {
@@ -38,7 +38,7 @@ public class NeoГрафика extends NeoУзел implements DbГрафика, 
         String uri = new NeoЗона( getNodeURI() ).uri();
         if( !XMLNS_URI.contains( uri ) )
             throw new IllegalArgumentException( LOGGER.text( "002001012S", uri, XMLNS_URI.toString() ) );
-        ТИПОВОЙ = XmlSvg.SVG_ELEMENT_USE.equals( тип().название() ) ?
+        ТИПОВОЙ = XmlSvg.SVG_ELEMENT_USE.equals( тип().НАЗВАНИЕ ) ?
                 new ТиповойImpl<>( () -> xlink( ссылка(), NeoГрафика.class, положение( "." ) ) ) : null; 
         ГРАФИКИ = new КоллекцияПоСвязи<>( node, Связь.Графика, n -> new NeoГрафика( n ) );
     }
