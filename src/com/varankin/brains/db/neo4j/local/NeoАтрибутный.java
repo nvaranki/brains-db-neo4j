@@ -18,13 +18,13 @@ import com.varankin.brains.db.xml.ЗонныйКлюч;
 import com.varankin.brains.db.xml.type.XmlТиповой;
 import com.varankin.brains.db.xml.XLinkActuate;
 import com.varankin.brains.db.xml.XLinkShow;
-import com.varankin.brains.db.xml.МаркированныйЗонныйКлюч;
 import com.varankin.util.LoggerX;
 
 import org.neo4j.graphdb.*;
 
 import java.util.function.Supplier;
 import java.util.logging.*;
+import java.util.Collections;
 import java.util.LinkedList;
 
 import static com.varankin.brains.db.DbПреобразователь.*;
@@ -53,15 +53,23 @@ abstract class NeoАтрибутный extends NeoNode implements DbАтрибу
     }
 
     @Override
-    public final ЗонныйКлюч тип() 
+    public ЗонныйКлюч тип() 
     {
-        return getDescriptor( this ); //TODO get from XmlXXX interfaces
+        String name = getNodeName( null );
+        String uri = null;
+        Node node = getNodeURI();
+        if( node != null )
+        {
+            NeoЗона ns = new NeoЗона( node );
+            uri = ns.uri();
+        }
+        return new ЗонныйКлюч( name, uri ); //TODO normally get from XmlXXX interfaces
     }
 
     @Override
-    public Iterable<МаркированныйЗонныйКлюч> ключи() 
+    public Iterable<ЗонныйКлюч> ключи( boolean актуальные ) 
     {
-        return getPropertyKeys( getNode() );
+        return актуальные ? getPropertyKeys( getNode() ) : Collections.emptyList(); //TODO DEBUG
     }
     
     @Override
@@ -265,21 +273,6 @@ abstract class NeoАтрибутный extends NeoNode implements DbАтрибу
         return значение == null || значение.trim().isEmpty() ? null : значение.trim().toCharArray();
     }
     
-    static МаркированныйЗонныйКлюч getDescriptor( NeoАтрибутный a )
-    {
-        String name = a.getNodeName( null );
-        String prefix = null;
-        String uri = null;
-        Node node = a.getNodeURI();
-        if( node != null )
-        {
-            NeoЗона ns = new NeoЗона( node );
-            prefix = ns.название();
-            uri = ns.uri();
-        }
-        return new МаркированныйЗонныйКлюч( name, uri, prefix );
-    }
-
     class КоллективныйImpl implements Коллективный
     {
         private final Коллекция<NeoБиблиотека> БИБЛИОТЕКИ;

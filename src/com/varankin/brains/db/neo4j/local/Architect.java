@@ -1,7 +1,6 @@
 package com.varankin.brains.db.neo4j.local;
 
 import com.varankin.brains.db.xml.XmlBrains;
-import com.varankin.brains.db.xml.МаркированныйЗонныйКлюч;
 import com.varankin.filter.*;
 import com.varankin.util.*;
 
@@ -24,7 +23,7 @@ import com.varankin.brains.db.xml.ЗонныйКлюч;
 /**
  * Utility container for Neo4j&trade;.
  * 
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 final class Architect
 {
@@ -269,39 +268,36 @@ final class Architect
         String.class, String[].class       
     );
 
-    static Iterable<МаркированныйЗонныйКлюч> getLocalPropertyKeys( final Node node )
+    static Iterable<ЗонныйКлюч> getLocalPropertyKeys( final Node node )
     {
-        Фильтр<МаркированныйЗонныйКлюч> фильтр = (ключ) -> 
+        Фильтр<ЗонныйКлюч> фильтр = (ключ) -> 
         {
-            String название = ключ.название();
+            String название = ключ.НАЗВАНИЕ;
             return название != null && !( название.startsWith( "#" ) );
         };
         ЗонныйКлюч тип = new NeoАтрибутный( node ){}.тип();
         Iterator<Relationship> nsri = node.getRelationships( Direction.INCOMING, NameSpace.Узел ).iterator();
-        String префикс = null;
         if( nsri.hasNext() )
         {
             NeoЗона nsn = new NeoЗона( nsri.next().getStartNode() );
             if( nsri.hasNext() ) throw new IllegalStateException( nsn.uri() );
-            префикс = nsn.название();
         }
         else
         {
             //TODO префикс на brains
         }
-        МаркированныйЗонныйКлюч мтип = new МаркированныйЗонныйКлюч( тип.НАЗВАНИЕ, тип.ЗОНА, префикс);
         return new FilteredIterable<>( () -> new LocalPropertyKeysIterator( 
-                node.getPropertyKeys().iterator(), мтип ), фильтр );
+                node.getPropertyKeys().iterator(), тип ), фильтр );
     }
     
-    static Iterable<МаркированныйЗонныйКлюч> getForeignPropertyKeys( final Node node )
+    static Iterable<ЗонныйКлюч> getForeignPropertyKeys( final Node node )
     {
-        Фильтр<МаркированныйЗонныйКлюч> фильтр = (ключ) -> !XML_XMLNS.equals( ключ.название() );
+        Фильтр<ЗонныйКлюч> фильтр = (ключ) -> !XML_XMLNS.equals( ключ.НАЗВАНИЕ );
         return new FilteredIterable<>( () -> new ForeignPropertyKeysIterator(
                 node.getRelationships( NameSpace.Атрибут, Direction.INCOMING ).iterator() ), фильтр );
     }
     
-    static Iterable<МаркированныйЗонныйКлюч> getPropertyKeys( Node node )
+    static Iterable<ЗонныйКлюч> getPropertyKeys( Node node )
     {
         return new MultiIterable<>(
                 getLocalPropertyKeys( node ),
@@ -359,11 +355,11 @@ final class Architect
     
     //<editor-fold defaultstate="collapsed" desc="property iterators">
     
-    static private class ForeignPropertyKeysIterator implements Iterator<МаркированныйЗонныйКлюч>
+    static private class ForeignPropertyKeysIterator implements Iterator<ЗонныйКлюч>
     {
         final Iterator<Relationship> NS_GROUPS;
         Iterator<String> KEYS = Collections.emptyIterator();
-        String URI, PREFIX;
+        String URI;
         
         ForeignPropertyKeysIterator( Iterator<Relationship> nsg )
         {
@@ -383,7 +379,6 @@ final class Architect
                     KEYS = r.getPropertyKeys().iterator();
                     NeoЗона nsn = new NeoЗона( r.getStartNode() );
                     URI = nsn.uri();//toStringValue( r.getStartNode().getProperty( XML_XMLNS, null ) );
-                    PREFIX = nsn.название();//toStringValue( //r.getProperty( XML_XMLNS, null ) );
                 }
                 else
                     return false;
@@ -392,10 +387,10 @@ final class Architect
         }
         
         @Override
-        public МаркированныйЗонныйКлюч next()
+        public ЗонныйКлюч next()
         {
             if( hasNext() )
-                return new МаркированныйЗонныйКлюч( KEYS.next(), URI, PREFIX );
+                return new ЗонныйКлюч( KEYS.next(), URI );
             else
                 throw new NoSuchElementException();
         }
@@ -407,16 +402,15 @@ final class Architect
         }
     }
     
-    static private class LocalPropertyKeysIterator implements Iterator<МаркированныйЗонныйКлюч>
+    static private class LocalPropertyKeysIterator implements Iterator<ЗонныйКлюч>
     {
         final Iterator<String> ITERATOR;
-        final String URI, PREFIX;
+        final String URI;
         
-        LocalPropertyKeysIterator( Iterator<String> iterator, МаркированныйЗонныйКлюч тип )
+        LocalPropertyKeysIterator( Iterator<String> iterator, ЗонныйКлюч тип )
         {
             ITERATOR = iterator;
             URI = тип.ЗОНА;
-            PREFIX = тип.PREFIX;
         }
         
         @Override
@@ -426,9 +420,9 @@ final class Architect
         }
         
         @Override
-        public МаркированныйЗонныйКлюч next()
+        public ЗонныйКлюч next()
         {
-            return new МаркированныйЗонныйКлюч( ITERATOR.next(), URI, PREFIX );
+            return new ЗонныйКлюч( ITERATOR.next(), URI );
         }
         
         @Override

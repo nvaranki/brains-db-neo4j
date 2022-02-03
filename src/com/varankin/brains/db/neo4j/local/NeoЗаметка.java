@@ -5,6 +5,7 @@ import com.varankin.brains.db.type.DbТекстовыйБлок;
 import com.varankin.brains.db.type.DbЗаметка;
 import com.varankin.brains.db.type.DbГрафика;
 import com.varankin.brains.db.xml.type.XmlЗаметка;
+import com.varankin.brains.db.xml.ЗонныйКлюч;
 
 import org.neo4j.graphdb.*;
 
@@ -13,7 +14,7 @@ import static com.varankin.brains.db.DbПреобразователь.*;
 /**
  * Произвольный текст к фрагменту мыслительной структуры в Neo4j.
  *
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 final class NeoЗаметка extends NeoУзел implements DbЗаметка, XmlЗаметка
 {
@@ -28,6 +29,12 @@ final class NeoЗаметка extends NeoУзел implements DbЗаметка, X
     {
         super( КЛЮЧ_Э_ЗАМЕТКА, node );
         ГРАФИКИ = new КоллекцияПоСвязи<>( node, Связь.Графика, NeoГрафика::new );
+    }
+
+    @Override
+    public ЗонныйКлюч тип() 
+    {
+        return КЛЮЧ_Э_ЗАМЕТКА;
     }
 
     @Override

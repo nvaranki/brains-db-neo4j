@@ -5,6 +5,7 @@ import com.varankin.brains.db.type.DbПакет;
 import com.varankin.brains.db.type.DbБиблиотека;
 import com.varankin.brains.db.type.DbПроект;
 import com.varankin.brains.db.xml.type.XmlПакет;
+import com.varankin.brains.db.xml.ЗонныйКлюч;
 
 import org.neo4j.graphdb.*;
 
@@ -14,7 +15,7 @@ import static com.varankin.brains.db.DbПреобразователь.toStringVa
  * Пакет из проектов и библиотек мыслительных структур на базе Neo4j.
  * Используется при обмене с внешними системами.
  *
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 final class NeoПакет extends NeoУзел implements DbПакет, XmlПакет
 {
@@ -35,6 +36,12 @@ final class NeoПакет extends NeoУзел implements DbПакет, XmlПак
         XLINK_PROCESSOR = new XLinkProcessor( node );
     }
     
+    @Override
+    public ЗонныйКлюч тип() 
+    {
+        return КЛЮЧ_Э_ПАКЕТ;
+    }
+
     @Override
     public Коллекция<DbПроект> проекты()
     {

@@ -2,7 +2,6 @@ package com.varankin.brains.db.neo4j.local;
 
 import com.varankin.brains.db.Транзакция;
 import com.varankin.brains.db.xml.ЗонныйКлюч;
-import com.varankin.brains.db.xml.МаркированныйЗонныйКлюч;
 import com.varankin.util.LoggerX;
 
 import java.util.Objects;
@@ -83,29 +82,19 @@ abstract class NeoNode
         return null;
     }
 
-    protected static Node createNodeInNameSpace( МаркированныйЗонныйКлюч ключ, GraphDatabaseService сервис )
-    {
-        return createNodeInNameSpace( ключ.название(), ключ.uri(), ключ.префикс(), сервис );
-    }
-
     protected static Node createNodeInNameSpace( ЗонныйКлюч ключ, GraphDatabaseService сервис )
-    {
-        // текущая или традиционная маркировка зоны не обязательна
-        return createNodeInNameSpace( ключ.НАЗВАНИЕ, ключ.ЗОНА, null, сервис );
-    }
-
-    protected static Node createNodeInNameSpace( String название, 
-            String uri, String префикс, GraphDatabaseService сервис )
     {
         Node node = сервис.createNode();
         
-        if( название != null )
-            Architect.setXmlEntry( node, название );
-        
-        if( uri != null )
+        // текущая или традиционная маркировка зоны не обязательна
+        if( ключ.НАЗВАНИЕ != null )
+        {
+            Architect.setXmlEntry( node, ключ.НАЗВАНИЕ );
+        }
+        if( ключ.ЗОНА != null )
         {
             NeoАрхив архив = Architect.getInstance().getArchive( сервис );
-            NeoЗона пи = (NeoЗона)архив.определитьПространствоИмен( uri, префикс );
+            NeoЗона пи = (NeoЗона)архив.определитьПространствоИмен( ключ.ЗОНА, null );
             пи.getNode().createRelationshipTo( node, NameSpace.Узел );
         }
         return node;

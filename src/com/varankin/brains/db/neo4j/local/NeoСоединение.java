@@ -4,6 +4,7 @@ import com.varankin.brains.db.Коллекция;
 import com.varankin.brains.db.type.DbСоединение;
 import com.varankin.brains.db.type.DbКонтакт;
 import com.varankin.brains.db.xml.type.XmlСоединение;
+import com.varankin.brains.db.xml.ЗонныйКлюч;
 
 import org.neo4j.graphdb.*;
 
@@ -12,7 +13,7 @@ import org.neo4j.graphdb.*;
  * Соединения могут дублировать или дополнять друг друга. 
  * Они различаются по {@linkplain #название() названию}.
  *
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 final class NeoСоединение extends NeoЭлемент implements DbСоединение, XmlСоединение
 {
@@ -27,6 +28,12 @@ final class NeoСоединение extends NeoЭлемент implements DbСо�
     {
         super( КЛЮЧ_Э_СОЕДИНЕНИЕ, node );
         КОНТАКТЫ = new КоллекцияПоСвязи<>( node, Связь.Контакт, NeoКонтакт::new );
+    }
+
+    @Override
+    public ЗонныйКлюч тип() 
+    {
+        return КЛЮЧ_Э_СОЕДИНЕНИЕ;
     }
 
     @Override

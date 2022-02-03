@@ -2,6 +2,7 @@ package com.varankin.brains.db.neo4j.local;
 
 import com.varankin.brains.db.type.DbСенсор;
 import com.varankin.brains.db.xml.type.XmlСенсор;
+import com.varankin.brains.db.xml.ЗонныйКлюч;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -9,7 +10,7 @@ import org.neo4j.graphdb.Node;
 /**
  * Сигнал, формируемый по результату расчета когнитивной функции, в Neo4j.
  * 
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 final class NeoСенсор extends NeoЭлементВПТ<DbСенсор> implements DbСенсор, XmlСенсор
 {
@@ -23,6 +24,12 @@ final class NeoСенсор extends NeoЭлементВПТ<DbСенсор> impl
     NeoСенсор( Node node ) 
     {
         super( КЛЮЧ_Э_СЕНСОР, node, DbСенсор.class );
+    }
+
+    @Override
+    public ЗонныйКлюч тип() 
+    {
+        return КЛЮЧ_Э_СЕНСОР;
     }
 
 //    @Override

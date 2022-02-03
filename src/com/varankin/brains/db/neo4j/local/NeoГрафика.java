@@ -44,6 +44,12 @@ public class NeoГрафика extends NeoУзел implements DbГрафика, 
     }
 
     @Override
+    public ЗонныйКлюч тип() 
+    {
+        return КЛЮЧ_Э_ГРАФИКА.get( getNodeName( null ) );
+    }
+
+    @Override
     public final Коллекция<DbГрафика> графики()
     {
         return (Коллекция)ГРАФИКИ;

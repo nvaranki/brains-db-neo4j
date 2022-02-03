@@ -13,9 +13,9 @@ import org.neo4j.graphdb.Node;
  * обладающего дополнительными свойствами
  * {@link Внешний}, {@link Параметризованный} и {@link Типовой}.
  *
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
-class NeoЭлементВПТ<T extends DbЭлемент> 
+abstract class NeoЭлементВПТ<T extends DbЭлемент> 
         extends NeoЭлементВП 
         implements Типовой<T>
 {

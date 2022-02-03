@@ -2,6 +2,7 @@ package com.varankin.brains.db.neo4j.local;
 
 import com.varankin.brains.db.type.DbКонтакт;
 import com.varankin.brains.db.type.DbСигнал;
+import com.varankin.brains.db.xml.ЗонныйКлюч;
 import com.varankin.brains.db.xml.type.XmlКонтакт;
 import com.varankin.brains.db.xml.type.XmlСигнал;
 import com.varankin.brains.db.xml.type.XmlФрагмент;
@@ -18,7 +19,7 @@ import static com.varankin.brains.db.DbПреобразователь.*;
  * Фрагмент {@linkplain Соединение соединения} для приема-передачи
  * одного {@link DbСигнал сигнала} в Neo4j.
  *
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 final class NeoКонтакт extends NeoЭлементВП implements DbКонтакт, XmlКонтакт
 {
@@ -32,6 +33,12 @@ final class NeoКонтакт extends NeoЭлементВП implements DbКон�
     NeoКонтакт( Node node ) 
     {
         super( КЛЮЧ_Э_КОНТАКТ, node );
+    }
+    
+    @Override
+    public ЗонныйКлюч тип() 
+    {
+        return КЛЮЧ_Э_КОНТАКТ;
     }
 
     @Override
@@ -53,7 +60,7 @@ final class NeoКонтакт extends NeoЭлементВП implements DbКон�
         if( название != null )
         {
             Node n = getParentNode( getParentNode( getNode(), Связь.Контакт ) );
-            if( Objects.equals( XmlФрагмент.КЛЮЧ_Э_ФРАГМЕНТ.НАЗВАНИЕ, getDescriptor( new NeoУзел( n ) ).НАЗВАНИЕ ) )
+            if( Objects.equals( XmlФрагмент.КЛЮЧ_Э_ФРАГМЕНТ.НАЗВАНИЕ, ( new NeoАтрибутный( n ) {} ).тип().НАЗВАНИЕ ) )
                 n = getParentNode( n ); // у фрагмента нет своих сигналов
             // поиск в произвольном владельце сигналов
             for( Relationship r : n.getRelationships( Direction.OUTGOING, Связь.Сигнал ) )

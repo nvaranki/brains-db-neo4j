@@ -3,6 +3,7 @@ package com.varankin.brains.db.neo4j.local;
 import com.varankin.brains.db.Коллекция;
 import com.varankin.brains.db.type.DbТочка;
 import com.varankin.brains.db.xml.type.XmlТочка;
+import com.varankin.brains.db.xml.ЗонныйКлюч;
 
 import org.neo4j.graphdb.*;
 
@@ -13,7 +14,7 @@ import static com.varankin.brains.db.DbПреобразователь.*;
  * Точки в составе данной служат аргументами вычисляемой функции, 
  * которая специфична и определяется в данной точке.
  *
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 final class NeoТочка extends NeoЭлементВПТ<DbТочка> implements DbТочка, XmlТочка
 {
@@ -28,6 +29,12 @@ final class NeoТочка extends NeoЭлементВПТ<DbТочка> implemen
     {
         super( КЛЮЧ_Э_ТОЧКА, node, DbТочка.class );
         ТОЧКИ = new КоллекцияПоСвязи<>( node, Связь.Точка, NeoТочка::new );
+    }
+
+    @Override
+    public ЗонныйКлюч тип() 
+    {
+        return КЛЮЧ_Э_ТОЧКА;
     }
 
     @Override

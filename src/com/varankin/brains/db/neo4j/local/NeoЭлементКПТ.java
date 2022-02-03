@@ -16,9 +16,9 @@ import org.neo4j.graphdb.Node;
  * обладающего дополнительными свойствами
  * {@link Коммутируемый}, {@link Параметризованный} и {@link Типовой}.
  *
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
-class NeoЭлементКПТ<T extends DbЭлемент> 
+abstract class NeoЭлементКПТ<T extends DbЭлемент> 
         extends NeoЭлементК 
         implements Параметризованный, Типовой<T>
 {

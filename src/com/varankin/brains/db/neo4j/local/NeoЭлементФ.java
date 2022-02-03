@@ -15,9 +15,9 @@ import org.neo4j.graphdb.Node;
  * обладающего дополнительными свойствами
  * {@link Коллективный}.
  *
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
-class NeoЭлементФ 
+abstract class NeoЭлементФ 
         extends NeoЭлемент 
         implements Коллективный
 {

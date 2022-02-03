@@ -12,9 +12,9 @@ import org.neo4j.graphdb.Node;
  * обладающего дополнительными свойствами
  * {@link Коммутируемый}.
  *
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
-class NeoЭлементК 
+abstract class NeoЭлементК 
         extends NeoЭлемент 
         implements Коммутируемый
 {

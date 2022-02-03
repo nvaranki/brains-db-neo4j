@@ -3,8 +3,8 @@ package com.varankin.brains.db.neo4j.local;
 import com.varankin.brains.db.type.DbАтрибутный;
 import com.varankin.brains.db.DbОператор;
 import com.varankin.brains.db.type.DbТекстовыйБлок;
-import com.varankin.brains.db.xml.МаркированныйЗонныйКлюч;
 import com.varankin.brains.db.xml.type.XmlТекстовыйБлок;
+import com.varankin.brains.db.xml.ЗонныйКлюч;
 import com.varankin.util.MultiIterable;
 
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -16,12 +16,12 @@ import static com.varankin.brains.db.DbПреобразователь.*;
 /**
  * Блок произвольного текста в Neo4j
  * 
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 class NeoТекстовыйБлок extends NeoАтрибутный implements DbТекстовыйБлок, XmlТекстовыйБлок
 {
-    private static final МаркированныйЗонныйКлюч КЛЮЧ_TEXT = new МаркированныйЗонныйКлюч( КЛЮЧ_А_ТЕКСТ.НАЗВАНИЕ, КЛЮЧ_А_ТЕКСТ.ЗОНА, null );
-    private static final МаркированныйЗонныйКлюч КЛЮЧ_СТРОКА = new МаркированныйЗонныйКлюч( КЛЮЧ_А_СТРОКА.НАЗВАНИЕ, КЛЮЧ_А_СТРОКА.ЗОНА, null );
+    private static final ЗонныйКлюч КЛЮЧ_TEXT   = new ЗонныйКлюч( КЛЮЧ_А_ТЕКСТ.НАЗВАНИЕ, КЛЮЧ_А_ТЕКСТ.ЗОНА );
+    private static final ЗонныйКлюч КЛЮЧ_СТРОКА = new ЗонныйКлюч( КЛЮЧ_А_СТРОКА.НАЗВАНИЕ, КЛЮЧ_А_СТРОКА.ЗОНА );
 
     NeoТекстовыйБлок( GraphDatabaseService сервис )
     {
@@ -31,6 +31,12 @@ class NeoТекстовыйБлок extends NeoАтрибутный implements D
     NeoТекстовыйБлок( Node node ) 
     {
         super( КЛЮЧ_Э_Т_БЛОК, node );
+    }
+
+    @Override
+    public ЗонныйКлюч тип() 
+    {
+        return КЛЮЧ_Э_Т_БЛОК;
     }
 
     @Override
@@ -58,7 +64,7 @@ class NeoТекстовыйБлок extends NeoАтрибутный implements D
     }
 
     @Override
-    public Iterable<МаркированныйЗонныйКлюч> ключи() 
+    public Iterable<ЗонныйКлюч> ключи() 
     {
         // Свободный текст не является именованным атрибутом, поэтому его ключ 
         // является служебным и по этой причине отфильтровывается в суперклассе. 

@@ -14,7 +14,7 @@ import com.varankin.brains.db.xml.ЗонныйКлюч;
 /**
  * Узел графа со стандартными коллекциями в Neo4j.
  *
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 class NeoУзел extends NeoАтрибутный implements DbУзел
 {
@@ -39,6 +39,12 @@ class NeoУзел extends NeoАтрибутный implements DbУзел
         ИНСТРУКЦИИ = new КоллекцияПоСвязи<>( node, Связь.Инструкция, NeoИнструкция::new );
         ТЕКСТЫ = new КоллекцияПоСвязи<>( node, Связь.Текст, NeoТекстовыйБлок::new );
         ПРОЧЕЕ = new КоллекцияПоСвязи<>( node, Связь.Прочее, NeoУзел::new );
+    }
+
+    @Override
+    public ЗонныйКлюч тип() 
+    {
+        throw new UnsupportedOperationException( NeoУзел.class.getName() );
     }
 
     @Override

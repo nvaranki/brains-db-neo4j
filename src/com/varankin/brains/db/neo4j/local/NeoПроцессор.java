@@ -2,6 +2,7 @@ package com.varankin.brains.db.neo4j.local;
 
 import com.varankin.brains.db.type.DbПроцессор;
 import com.varankin.brains.db.xml.type.XmlПроцессор;
+import com.varankin.brains.db.xml.ЗонныйКлюч;
 
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -13,7 +14,7 @@ import static com.varankin.brains.db.DbПреобразователь.*;
  * Выполняет опрос "засветившихся" датчиков, что, в результате,
  * приводит к расчету когнитивной функции и генерации сигналов.
  *
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 final class NeoПроцессор 
         extends NeoЭлементВПТ<DbПроцессор> 
@@ -27,6 +28,12 @@ final class NeoПроцессор
     NeoПроцессор( Node node ) 
     {
         super( КЛЮЧ_Э_ПРОЦЕССОР, node, DbПроцессор.class );
+    }
+
+    @Override
+    public ЗонныйКлюч тип() 
+    {
+        return КЛЮЧ_Э_ПРОЦЕССОР;
     }
 
     @Override

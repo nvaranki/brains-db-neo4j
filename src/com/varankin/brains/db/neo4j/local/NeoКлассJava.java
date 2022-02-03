@@ -3,6 +3,7 @@ package com.varankin.brains.db.neo4j.local;
 import com.varankin.brains.db.type.DbТекстовыйБлок;
 import com.varankin.brains.db.type.DbКлассJava;
 import com.varankin.brains.db.xml.type.XmlКлассJava;
+import com.varankin.brains.db.xml.ЗонныйКлюч;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -14,7 +15,7 @@ import static com.varankin.brains.db.DbПреобразователь.*;
  * Выполняет функции элемента мыслительной структуры, в 
  * которую он вложен. 
  *
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 final class NeoКлассJava extends NeoЭлемент implements DbКлассJava, XmlКлассJava
 {
@@ -28,6 +29,12 @@ final class NeoКлассJava extends NeoЭлемент implements DbКлассJ
         super( КЛЮЧ_Э_JAVA, node );
     }
     
+    @Override
+    public ЗонныйКлюч тип() 
+    {
+        return КЛЮЧ_Э_JAVA;
+    }
+
     @Override
     public String название() 
     {

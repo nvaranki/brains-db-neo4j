@@ -29,7 +29,7 @@ import com.varankin.brains.db.xml.ЗонныйКлюч;
 /**
  * Архив мыслительных структур на базе Neo4j.
  *
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 public final class NeoАрхив extends NeoАтрибутный implements DbАрхив, XmlАрхив
 {
@@ -83,6 +83,12 @@ public final class NeoАрхив extends NeoАтрибутный implements DbА
             t.success();
             return node;
         }
+    }
+
+    @Override
+    public ЗонныйКлюч тип() 
+    {
+        return КЛЮЧ_Э_АРХИВ;
     }
 
     @Override

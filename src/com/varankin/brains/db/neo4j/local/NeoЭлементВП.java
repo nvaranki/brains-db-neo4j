@@ -14,9 +14,9 @@ import org.neo4j.graphdb.Node;
  * обладающего дополнительными свойствами
  * {@link Внешний} и {@link Параметризованный}.
  *
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
-class NeoЭлементВП
+abstract class NeoЭлементВП
         extends NeoЭлемент 
         implements Внешний, Параметризованный
 {

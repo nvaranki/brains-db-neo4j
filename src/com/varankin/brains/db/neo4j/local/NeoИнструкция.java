@@ -3,6 +3,7 @@ package com.varankin.brains.db.neo4j.local;
 import com.varankin.brains.db.type.DbИнструкция;
 import com.varankin.brains.db.xml.PiProcessor;
 import com.varankin.brains.db.xml.type.XmlИнструкция;
+import com.varankin.brains.db.xml.ЗонныйКлюч;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -12,7 +13,7 @@ import static com.varankin.brains.db.DbПреобразователь.*;
 /**
  * Инструкция для обработки в Neo4j.
  * 
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 final class NeoИнструкция extends NeoАтрибутный implements DbИнструкция, XmlИнструкция
 {
@@ -26,6 +27,12 @@ final class NeoИнструкция extends NeoАтрибутный implements D
         super( КЛЮЧ_Э_ИНСТРУКЦИЯ, node );
     }
     
+    @Override
+    public ЗонныйКлюч тип() 
+    {
+        return КЛЮЧ_Э_ИНСТРУКЦИЯ;
+    }
+
     @Override
     public String выполнить()
     {

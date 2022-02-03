@@ -2,6 +2,7 @@ package com.varankin.brains.db.neo4j.local;
 
 import com.varankin.brains.db.type.DbСигнал;
 import com.varankin.brains.db.xml.type.XmlСигнал;
+import com.varankin.brains.db.xml.ЗонныйКлюч;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -11,7 +12,7 @@ import static com.varankin.brains.db.DbПреобразователь.*;
 /**
  * Сигнал, формируемый по результату расчета когнитивной функции, в Neo4j.
  * 
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 final class NeoСигнал extends NeoЭлемент implements DbСигнал, XmlСигнал
 {
@@ -23,6 +24,12 @@ final class NeoСигнал extends NeoЭлемент implements DbСигнал,
     NeoСигнал( Node node ) 
     {
         super( КЛЮЧ_Э_СИГНАЛ, node );
+    }
+
+    @Override
+    public ЗонныйКлюч тип() 
+    {
+        return КЛЮЧ_Э_СИГНАЛ;
     }
 
     @Override

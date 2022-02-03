@@ -3,6 +3,7 @@ package com.varankin.brains.db.neo4j.local;
 import com.varankin.brains.db.type.DbАтрибутный;
 import com.varankin.brains.db.type.DbЗона;
 import com.varankin.brains.db.xml.type.XmlЗона;
+import com.varankin.brains.db.xml.ЗонныйКлюч;
 import com.varankin.brains.db.DbОператор;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import static com.varankin.brains.db.DbПреобразователь.toStringVa
 /**
  * Расширенное название пространства имен XML в Neo4j.
  * 
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 final class NeoЗона extends NeoАтрибутный implements DbЗона, XmlЗона
 {
@@ -31,6 +32,12 @@ final class NeoЗона extends NeoАтрибутный implements DbЗона, X
         super( КЛЮЧ_Э_ЗОНА, node );
     }
     
+    @Override
+    public ЗонныйКлюч тип() 
+    {
+        return КЛЮЧ_Э_ЗОНА;
+    }
+
     @Override
     public List<String> варианты()
     {

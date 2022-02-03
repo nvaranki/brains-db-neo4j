@@ -4,6 +4,7 @@ import com.varankin.brains.db.Коллекция;
 import com.varankin.brains.db.type.DbСенсор;
 import com.varankin.brains.db.type.DbПоле;
 import com.varankin.brains.db.xml.type.XmlПоле;
+import com.varankin.brains.db.xml.ЗонныйКлюч;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -13,7 +14,7 @@ import org.neo4j.graphdb.Node;
  * Состоит из внешних соединений, привязанных ко внутренним
  * сигналам - перемычкам или источникам сигналов.
  *
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 final class NeoПоле extends NeoЭлементК implements DbПоле, XmlПоле
 {
@@ -28,6 +29,12 @@ final class NeoПоле extends NeoЭлементК implements DbПоле, XmlП
     {
         super( КЛЮЧ_Э_ПОЛЕ, node );
         СЕНСОРЫ = new КоллекцияПоСвязи<>( node, Связь.Сигнал, NeoСенсор::new );
+    }
+
+    @Override
+    public ЗонныйКлюч тип() 
+    {
+        return КЛЮЧ_Э_ПОЛЕ;
     }
 
     @Override

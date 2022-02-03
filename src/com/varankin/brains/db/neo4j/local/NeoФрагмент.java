@@ -2,6 +2,7 @@ package com.varankin.brains.db.neo4j.local;
 
 import com.varankin.brains.db.type.DbФрагмент;
 import com.varankin.brains.db.xml.type.XmlФрагмент;
+import com.varankin.brains.db.xml.ЗонныйКлюч;
 
 import org.neo4j.graphdb.*;
 
@@ -12,7 +13,7 @@ import static com.varankin.brains.db.DbПреобразователь.*;
  * Экземплярами такой структуры могут быть 
  * {@link Модуль}, {@link Расчет}, {@link DbЛента} или {@link Поле}.
  *
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 final class NeoФрагмент 
         extends NeoЭлементКПТ<DbФрагмент.Экземпляр> 
@@ -26,6 +27,12 @@ final class NeoФрагмент
     NeoФрагмент( Node node ) 
     {
         super( КЛЮЧ_Э_ФРАГМЕНТ, node, DbФрагмент.Экземпляр.class );
+    }
+
+    @Override
+    public ЗонныйКлюч тип() 
+    {
+        return КЛЮЧ_Э_ФРАГМЕНТ;
     }
 
     @Override

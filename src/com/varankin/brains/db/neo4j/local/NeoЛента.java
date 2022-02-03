@@ -2,13 +2,15 @@ package com.varankin.brains.db.neo4j.local;
 
 import com.varankin.brains.db.type.DbЛента;
 import com.varankin.brains.db.xml.type.XmlЛента;
+import com.varankin.brains.db.xml.ЗонныйКлюч;
+
 import org.neo4j.graphdb.*;
 
 /**
  * Фрагмент мыслительной структуры с памятью на базе Neo4j.
  * Состоит из ленты времени и внешних соединений.
  *
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 final class NeoЛента extends NeoЭлементК implements DbЛента, XmlЛента
 {
@@ -20,6 +22,12 @@ final class NeoЛента extends NeoЭлементК implements DbЛента, X
     NeoЛента( Node node )
     {
         super( КЛЮЧ_Э_ЛЕНТА, node );
+    }
+
+    @Override
+    public ЗонныйКлюч тип() 
+    {
+        return КЛЮЧ_Э_ЛЕНТА;
     }
 
 }
