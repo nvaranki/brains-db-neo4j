@@ -2,7 +2,7 @@ package com.varankin.brains.db.neo4j.local;
 
 import com.varankin.brains.db.type.DbСигнал;
 import com.varankin.brains.db.xml.type.XmlСигнал;
-import com.varankin.brains.db.xml.ЗонныйКлюч;
+import com.varankin.brains.db.xml.АтрибутныйКлюч;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -27,7 +27,7 @@ final class NeoСигнал extends NeoЭлемент implements DbСигнал,
     }
 
     @Override
-    public ЗонныйКлюч тип() 
+    public АтрибутныйКлюч тип() 
     {
         return КЛЮЧ_Э_СИГНАЛ;
     }

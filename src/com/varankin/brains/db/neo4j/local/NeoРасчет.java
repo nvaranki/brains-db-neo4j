@@ -4,7 +4,7 @@ import com.varankin.brains.db.Коллекция;
 import com.varankin.brains.db.type.DbРасчет;
 import com.varankin.brains.db.type.DbТочка;
 import com.varankin.brains.db.xml.type.XmlРасчет;
-import com.varankin.brains.db.xml.ЗонныйКлюч;
+import com.varankin.brains.db.xml.АтрибутныйКлюч;
 
 import org.neo4j.graphdb.*;
 
@@ -31,7 +31,7 @@ final class NeoРасчет extends NeoЭлементК implements DbРасче�
     }
 
     @Override
-    public ЗонныйКлюч тип() 
+    public АтрибутныйКлюч тип() 
     {
         return КЛЮЧ_Э_РАСЧЕТ;
     }

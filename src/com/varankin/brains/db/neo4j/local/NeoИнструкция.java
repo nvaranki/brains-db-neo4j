@@ -3,7 +3,7 @@ package com.varankin.brains.db.neo4j.local;
 import com.varankin.brains.db.type.DbИнструкция;
 import com.varankin.brains.db.xml.PiProcessor;
 import com.varankin.brains.db.xml.type.XmlИнструкция;
-import com.varankin.brains.db.xml.ЗонныйКлюч;
+import com.varankin.brains.db.xml.АтрибутныйКлюч;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -28,7 +28,7 @@ final class NeoИнструкция extends NeoАтрибутный implements D
     }
     
     @Override
-    public ЗонныйКлюч тип() 
+    public АтрибутныйКлюч тип() 
     {
         return КЛЮЧ_Э_ИНСТРУКЦИЯ;
     }

@@ -3,7 +3,7 @@ package com.varankin.brains.db.neo4j.local;
 import com.varankin.brains.db.type.DbАтрибутный;
 import com.varankin.brains.db.type.DbЗона;
 import com.varankin.brains.db.xml.type.XmlЗона;
-import com.varankin.brains.db.xml.ЗонныйКлюч;
+import com.varankin.brains.db.xml.АтрибутныйКлюч;
 import com.varankin.brains.db.DbОператор;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ final class NeoЗона extends NeoАтрибутный implements DbЗона, X
     }
     
     @Override
-    public ЗонныйКлюч тип() 
+    public АтрибутныйКлюч тип() 
     {
         return КЛЮЧ_Э_ЗОНА;
     }

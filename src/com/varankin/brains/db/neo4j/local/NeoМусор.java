@@ -4,7 +4,7 @@ import com.varankin.brains.db.Коллекция;
 import com.varankin.brains.db.type.DbАтрибутный;
 import com.varankin.brains.db.type.DbМусор;
 import com.varankin.brains.db.xml.type.XmlМусор;
-import com.varankin.brains.db.xml.ЗонныйКлюч;
+import com.varankin.brains.db.xml.АтрибутныйКлюч;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -30,7 +30,7 @@ final class NeoМусор extends NeoАтрибутный implements DbМусо�
     }
     
     @Override
-    public ЗонныйКлюч тип() 
+    public АтрибутныйКлюч тип() 
     {
         return КЛЮЧ_Э_МУСОР;
     }

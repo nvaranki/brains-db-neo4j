@@ -4,6 +4,7 @@ import com.varankin.brains.db.type.DbАтрибутный;
 import com.varankin.brains.db.DbОператор;
 import com.varankin.brains.db.type.DbТекстовыйБлок;
 import com.varankin.brains.db.xml.type.XmlТекстовыйБлок;
+import com.varankin.brains.db.xml.АтрибутныйКлюч;
 import com.varankin.brains.db.xml.ЗонныйКлюч;
 import com.varankin.util.MultiIterable;
 
@@ -34,7 +35,7 @@ class NeoТекстовыйБлок extends NeoАтрибутный implements D
     }
 
     @Override
-    public ЗонныйКлюч тип() 
+    public АтрибутныйКлюч тип() 
     {
         return КЛЮЧ_Э_Т_БЛОК;
     }

@@ -3,7 +3,7 @@ package com.varankin.brains.db.neo4j.local;
 import com.varankin.brains.db.type.DbТекстовыйБлок;
 import com.varankin.brains.db.type.DbКлассJava;
 import com.varankin.brains.db.xml.type.XmlКлассJava;
-import com.varankin.brains.db.xml.ЗонныйКлюч;
+import com.varankin.brains.db.xml.АтрибутныйКлюч;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -30,7 +30,7 @@ final class NeoКлассJava extends NeoЭлемент implements DbКлассJ
     }
     
     @Override
-    public ЗонныйКлюч тип() 
+    public АтрибутныйКлюч тип() 
     {
         return КЛЮЧ_Э_JAVA;
     }

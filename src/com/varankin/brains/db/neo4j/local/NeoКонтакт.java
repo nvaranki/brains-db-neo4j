@@ -2,7 +2,7 @@ package com.varankin.brains.db.neo4j.local;
 
 import com.varankin.brains.db.type.DbКонтакт;
 import com.varankin.brains.db.type.DbСигнал;
-import com.varankin.brains.db.xml.ЗонныйКлюч;
+import com.varankin.brains.db.xml.АтрибутныйКлюч;
 import com.varankin.brains.db.xml.type.XmlКонтакт;
 import com.varankin.brains.db.xml.type.XmlСигнал;
 import com.varankin.brains.db.xml.type.XmlФрагмент;
@@ -36,7 +36,7 @@ final class NeoКонтакт extends NeoЭлементВП implements DbКон�
     }
     
     @Override
-    public ЗонныйКлюч тип() 
+    public АтрибутныйКлюч тип() 
     {
         return КЛЮЧ_Э_КОНТАКТ;
     }

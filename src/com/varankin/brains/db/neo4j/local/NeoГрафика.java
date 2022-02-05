@@ -4,6 +4,7 @@ import com.varankin.brains.db.type.DbГрафика;
 import com.varankin.brains.db.xml.XLinkActuate;
 import com.varankin.brains.db.xml.XLinkShow;
 import com.varankin.brains.db.xml.type.XmlГрафика;
+import com.varankin.brains.db.xml.АтрибутныйКлюч;
 import com.varankin.brains.db.Коллекция;
 import com.varankin.brains.db.xml.ЗонныйКлюч;
 import com.varankin.io.xml.svg.XmlSvg;
@@ -44,7 +45,7 @@ public class NeoГрафика extends NeoУзел implements DbГрафика, 
     }
 
     @Override
-    public ЗонныйКлюч тип() 
+    public АтрибутныйКлюч тип() 
     {
         return КЛЮЧ_Э_ГРАФИКА.get( getNodeName( null ) );
     }

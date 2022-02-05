@@ -4,7 +4,7 @@ import com.varankin.brains.db.Коллекция;
 import com.varankin.brains.db.type.DbСоединение;
 import com.varankin.brains.db.type.DbКонтакт;
 import com.varankin.brains.db.xml.type.XmlСоединение;
-import com.varankin.brains.db.xml.ЗонныйКлюч;
+import com.varankin.brains.db.xml.АтрибутныйКлюч;
 
 import org.neo4j.graphdb.*;
 
@@ -31,7 +31,7 @@ final class NeoСоединение extends NeoЭлемент implements DbСо�
     }
 
     @Override
-    public ЗонныйКлюч тип() 
+    public АтрибутныйКлюч тип() 
     {
         return КЛЮЧ_Э_СОЕДИНЕНИЕ;
     }

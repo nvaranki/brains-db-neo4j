@@ -9,6 +9,8 @@ import com.varankin.brains.db.type.DbМусор;
 import com.varankin.brains.db.type.DbАрхив;
 import com.varankin.brains.db.xml.type.XmlАрхив;
 import com.varankin.brains.db.xml.XmlBrains;
+import com.varankin.brains.db.xml.АтрибутныйКлюч;
+import com.varankin.brains.db.xml.ЗонныйКлюч;
 import com.varankin.property.*;
 import com.varankin.util.LoggerX;
 
@@ -24,7 +26,6 @@ import static com.varankin.brains.db.DbПреобразователь.*;
 import static com.varankin.brains.db.neo4j.local.Architect.createArchiveNode;
 import static com.varankin.brains.db.neo4j.local.Architect.findSingleNode;
 import static com.varankin.brains.db.neo4j.local.NeoАтрибутный.trimToCharArray;
-import com.varankin.brains.db.xml.ЗонныйКлюч;
 
 /**
  * Архив мыслительных структур на базе Neo4j.
@@ -86,7 +87,7 @@ public final class NeoАрхив extends NeoАтрибутный implements DbА
     }
 
     @Override
-    public ЗонныйКлюч тип() 
+    public АтрибутныйКлюч тип() 
     {
         return КЛЮЧ_Э_АРХИВ;
     }

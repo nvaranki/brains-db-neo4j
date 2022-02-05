@@ -2,7 +2,7 @@ package com.varankin.brains.db.neo4j.local;
 
 import com.varankin.brains.db.type.DbФрагмент;
 import com.varankin.brains.db.xml.type.XmlФрагмент;
-import com.varankin.brains.db.xml.ЗонныйКлюч;
+import com.varankin.brains.db.xml.АтрибутныйКлюч;
 
 import org.neo4j.graphdb.*;
 
@@ -30,7 +30,7 @@ final class NeoФрагмент
     }
 
     @Override
-    public ЗонныйКлюч тип() 
+    public АтрибутныйКлюч тип() 
     {
         return КЛЮЧ_Э_ФРАГМЕНТ;
     }

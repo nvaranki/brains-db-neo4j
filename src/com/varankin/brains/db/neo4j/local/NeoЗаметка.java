@@ -5,7 +5,7 @@ import com.varankin.brains.db.type.DbТекстовыйБлок;
 import com.varankin.brains.db.type.DbЗаметка;
 import com.varankin.brains.db.type.DbГрафика;
 import com.varankin.brains.db.xml.type.XmlЗаметка;
-import com.varankin.brains.db.xml.ЗонныйКлюч;
+import com.varankin.brains.db.xml.АтрибутныйКлюч;
 
 import org.neo4j.graphdb.*;
 
@@ -32,7 +32,7 @@ final class NeoЗаметка extends NeoУзел implements DbЗаметка, X
     }
 
     @Override
-    public ЗонныйКлюч тип() 
+    public АтрибутныйКлюч тип() 
     {
         return КЛЮЧ_Э_ЗАМЕТКА;
     }

@@ -2,7 +2,7 @@ package com.varankin.brains.db.neo4j.local;
 
 import com.varankin.brains.db.type.DbЛента;
 import com.varankin.brains.db.xml.type.XmlЛента;
-import com.varankin.brains.db.xml.ЗонныйКлюч;
+import com.varankin.brains.db.xml.АтрибутныйКлюч;
 
 import org.neo4j.graphdb.*;
 
@@ -25,7 +25,7 @@ final class NeoЛента extends NeoЭлементК implements DbЛента, X
     }
 
     @Override
-    public ЗонныйКлюч тип() 
+    public АтрибутныйКлюч тип() 
     {
         return КЛЮЧ_Э_ЛЕНТА;
     }

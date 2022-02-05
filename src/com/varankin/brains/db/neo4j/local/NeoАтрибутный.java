@@ -14,6 +14,7 @@ import com.varankin.brains.db.type.DbПараметр;
 import com.varankin.brains.db.type.DbПроцессор;
 import com.varankin.brains.db.type.DbКлассJava;
 import com.varankin.brains.db.type.DbСигнал;
+import com.varankin.brains.db.xml.АтрибутныйКлюч;
 import com.varankin.brains.db.xml.ЗонныйКлюч;
 import com.varankin.brains.db.xml.type.XmlТиповой;
 import com.varankin.brains.db.xml.XLinkActuate;
@@ -53,7 +54,7 @@ abstract class NeoАтрибутный extends NeoNode implements DbАтрибу
     }
 
     @Override
-    public ЗонныйКлюч тип() 
+    public АтрибутныйКлюч тип() 
     {
         String name = getNodeName( null );
         String uri = null;
@@ -63,7 +64,7 @@ abstract class NeoАтрибутный extends NeoNode implements DbАтрибу
             NeoЗона ns = new NeoЗона( node );
             uri = ns.uri();
         }
-        return new ЗонныйКлюч( name, uri ); //TODO normally get from XmlXXX interfaces
+        return new АтрибутныйКлюч( name, uri ); //TODO normally get from XmlXXX interfaces
     }
 
     @Override

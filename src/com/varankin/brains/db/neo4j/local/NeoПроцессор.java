@@ -2,7 +2,7 @@ package com.varankin.brains.db.neo4j.local;
 
 import com.varankin.brains.db.type.DbПроцессор;
 import com.varankin.brains.db.xml.type.XmlПроцессор;
-import com.varankin.brains.db.xml.ЗонныйКлюч;
+import com.varankin.brains.db.xml.АтрибутныйКлюч;
 
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -31,11 +31,11 @@ final class NeoПроцессор
     }
 
     @Override
-    public ЗонныйКлюч тип() 
+    public АтрибутныйКлюч тип() 
     {
         return КЛЮЧ_Э_ПРОЦЕССОР;
     }
-
+    
     @Override
     public final Long задержка()
     {

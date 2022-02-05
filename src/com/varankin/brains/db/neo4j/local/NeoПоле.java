@@ -4,7 +4,7 @@ import com.varankin.brains.db.Коллекция;
 import com.varankin.brains.db.type.DbСенсор;
 import com.varankin.brains.db.type.DbПоле;
 import com.varankin.brains.db.xml.type.XmlПоле;
-import com.varankin.brains.db.xml.ЗонныйКлюч;
+import com.varankin.brains.db.xml.АтрибутныйКлюч;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -32,7 +32,7 @@ final class NeoПоле extends NeoЭлементК implements DbПоле, XmlП
     }
 
     @Override
-    public ЗонныйКлюч тип() 
+    public АтрибутныйКлюч тип() 
     {
         return КЛЮЧ_Э_ПОЛЕ;
     }

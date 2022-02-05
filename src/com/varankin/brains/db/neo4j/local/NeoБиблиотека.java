@@ -3,7 +3,7 @@ package com.varankin.brains.db.neo4j.local;
 import com.varankin.brains.db.Коллекция;
 import com.varankin.brains.db.type.*;
 import com.varankin.brains.db.xml.type.XmlБиблиотека;
-import com.varankin.brains.db.xml.ЗонныйКлюч;
+import com.varankin.brains.db.xml.АтрибутныйКлюч;
 
 import org.neo4j.graphdb.*;
 
@@ -43,7 +43,7 @@ final class NeoБиблиотека extends NeoЭлемент implements DbБи�
     }
 
     @Override
-    public ЗонныйКлюч тип() 
+    public АтрибутныйКлюч тип() 
     {
         return КЛЮЧ_Э_БИБЛИОТЕКА;
     }

@@ -5,7 +5,7 @@ import com.varankin.brains.db.type.DbПакет;
 import com.varankin.brains.db.type.DbБиблиотека;
 import com.varankin.brains.db.type.DbПроект;
 import com.varankin.brains.db.xml.type.XmlПакет;
-import com.varankin.brains.db.xml.ЗонныйКлюч;
+import com.varankin.brains.db.xml.АтрибутныйКлюч;
 
 import org.neo4j.graphdb.*;
 
@@ -37,7 +37,7 @@ final class NeoПакет extends NeoУзел implements DbПакет, XmlПак
     }
     
     @Override
-    public ЗонныйКлюч тип() 
+    public АтрибутныйКлюч тип() 
     {
         return КЛЮЧ_Э_ПАКЕТ;
     }

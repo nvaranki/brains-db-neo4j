@@ -5,7 +5,7 @@ import com.varankin.brains.db.Коллекция;
 import com.varankin.brains.db.type.DbСоединение;
 import com.varankin.brains.db.type.DbМодуль;
 import com.varankin.brains.db.xml.type.XmlМодуль;
-import com.varankin.brains.db.xml.ЗонныйКлюч;
+import com.varankin.brains.db.xml.АтрибутныйКлюч;
 
 import org.neo4j.graphdb.*;
 
@@ -32,7 +32,7 @@ final class NeoМодуль extends NeoЭлементФ implements DbМодул�
     }
 
     @Override
-    public ЗонныйКлюч тип() 
+    public АтрибутныйКлюч тип() 
     {
         return КЛЮЧ_Э_МОДУЛЬ;
     }
