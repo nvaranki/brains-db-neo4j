@@ -1,14 +1,12 @@
 package com.varankin.brains.db.neo4j.local;
 
 import com.varankin.brains.db.Коллекция;
-import com.varankin.brains.db.Транзакция;
 import com.varankin.brains.db.type.DbАтрибутный;
 import com.varankin.brains.db.type.DbПакет;
 import com.varankin.brains.db.type.DbЗона;
 import com.varankin.brains.db.type.DbМусор;
 import com.varankin.brains.db.type.DbАрхив;
 import com.varankin.brains.db.xml.type.XmlАрхив;
-import com.varankin.brains.db.xml.XmlBrains;
 import com.varankin.brains.db.xml.АтрибутныйКлюч;
 import com.varankin.brains.db.xml.ЗонныйКлюч;
 import com.varankin.property.*;
@@ -18,13 +16,11 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.logging.*;
+
 import org.neo4j.graphdb.*;
 
 import static com.varankin.brains.db.DbПреобразователь.*;
-import static com.varankin.brains.db.neo4j.local.Architect.createArchiveNode;
-import static com.varankin.brains.db.neo4j.local.Architect.findSingleNode;
 import static com.varankin.brains.db.neo4j.local.NeoАтрибутный.trimToCharArray;
 
 /**
@@ -39,53 +35,32 @@ public final class NeoАрхив extends NeoАтрибутный implements DbА
     private final Коллекция<NeoПакет> ПАКЕТЫ;
     private final Коллекция<NeoЗона> NAMESPACES;
     private final Коллекция<NeoМусор> КОРЗИНЫ;
-    private final FiringPropertyMonitor PCS;
+    private final String РАСПОЛОЖЕНИЕ;
+    private final FiringPropertyMonitor PCS; //TODO review the purpose
     
-    private Consumer<DbАрхив> обработчик;
-
     /**
      * @param путь расположение хранилища Neo4j в локальной файловой системе.
      * @param кАрх конфигурация индекса архивов.
      * @throws java.lang.Exception при ошибках.
      */
-    public NeoАрхив( String путь, Map<String, String> кАрх ) throws Exception
+    public NeoАрхив( File путь, Map<String, String> кАрх ) throws Exception
     {
-        this( node( Architect.openEmbeddedService( путь, кАрх ) ) );
-        Architect.getInstance().registerNewArchive( NeoАрхив.this, t -> 
-        { 
-            NeoАрхив архив = NeoАрхив.this;
-            архив.определить( КЛЮЧ_А_ИЗМЕНЕН, t ); 
-            if( обработчик != null ) обработчик.accept( архив );
-        } );
-        try( final Транзакция т = транзакция() )
-        {
-            определитьПространствоИмен( XmlBrains.XMLNS_BRAINS, XmlBrains.XML_BRAINS );
-            расположение( new File( путь ).getAbsolutePath() );
-            т.завершить( true );
-        }
+        this( ArchiveLocator.obtainArchiveNode( Architect.openEmbeddedService( путь ), кАрх ), 
+               путь.getAbsolutePath(), null );
+        Architect.registerTransactionEventHandler( getNode().getGraphDatabase(), this::изменен );
+        ArchiveLocator.getInstance().registerNewArchive( NeoАрхив.this );
     }
 
-    private NeoАрхив( Node node )
+    private NeoАрхив( Node node, String расположение, Object java15_0_1_defect ) //TODO java15_0_1_defect, see ОткрытьЛокальныйАрхивNeo4j
     {
         super( node );
-        //TODO validate( null/*XmlBrains.XMLNS_BRAINS*/, XmlBrains.XML_ARHIVE );
         ПАКЕТЫ = new КоллекцияПоСвязи<>( node, Связь.Пакет, NeoПакет::new );
         NAMESPACES = new КоллекцияПоСвязи<>( node, Связь.ПространствоИмен, NeoЗона::new );
         КОРЗИНЫ = new КоллекцияПоСвязи<>( node, Связь.Мусор, NeoМусор::new );
+        РАСПОЛОЖЕНИЕ = расположение;
         PCS = new SynchronizedPropertyMonitor();
     }
-
-    private static Node node( GraphDatabaseService сервис )
-    {
-        try( Transaction t = сервис.beginTx() )
-        {
-            Node node = findSingleNode( сервис, Architect.INDEX_ARCHIVE );
-            if( node == null ) node = createArchiveNode( сервис );
-            t.success();
-            return node;
-        }
-    }
-
+    
     @Override
     public АтрибутныйКлюч тип() 
     {
@@ -125,12 +100,7 @@ public final class NeoАрхив extends NeoАтрибутный implements DbА
     @Override
     public String расположение()
     {
-        return toStringValue( атрибут( КЛЮЧ_А_РАСПОЛОЖЕНИЕ, null ) );
-    }
-    
-    private void расположение( String значение )
-    {
-        определить( КЛЮЧ_А_РАСПОЛОЖЕНИЕ, trimToCharArray( значение ) );
+        return РАСПОЛОЖЕНИЕ;
     }
     
     @Override
@@ -147,10 +117,14 @@ public final class NeoАрхив extends NeoАтрибутный implements DbА
         return значение != null ? new Date( значение ) : null;
     }
 
-    @Override
-    public void обработчик( Consumer<DbАрхив> значение ) 
+    /**
+     * Регистрирует момент изменения содержимого архива.
+     * 
+     * @param момент момент времени изменения, в мс.
+     */
+    private void изменен( Long момент )
     {
-        обработчик = значение;
+        определить( КЛЮЧ_А_ИЗМЕНЕН, момент );
     }
 
     @Override
@@ -220,7 +194,7 @@ public final class NeoАрхив extends NeoАтрибутный implements DbА
     @Override
     public void закрыть()
     {
-        Architect.getInstance().unregisterArchive( this );
+        ArchiveLocator.getInstance().unregisterArchive( this );
     }
     
 }

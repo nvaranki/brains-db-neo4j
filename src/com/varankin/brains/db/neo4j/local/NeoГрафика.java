@@ -36,7 +36,7 @@ public class NeoГрафика extends NeoУзел implements DbГрафика, 
     public NeoГрафика( Node node )
     {
         super( node ); //TODO валидация SVG
-        String uri = new NeoЗона( getNodeURI() ).uri();
+        String uri = getNodeURI();
         if( !XMLNS_URI.contains( uri ) )
             throw new IllegalArgumentException( LOGGER.text( "002001012S", uri, XMLNS_URI.toString() ) );
         ТИПОВОЙ = XmlSvg.SVG_ELEMENT_USE.equals( тип().НАЗВАНИЕ ) ?
@@ -50,6 +50,13 @@ public class NeoГрафика extends NeoУзел implements DbГрафика, 
         return КЛЮЧ_Э_ГРАФИКА.get( getNodeName( null ) );
     }
 
+    @Override
+    public void определить( ЗонныйКлюч ключ, Object значение )
+    {
+        тип().АТРИБУТЫ.add( ключ ); //TODO SVG & XLink only?
+        super.определить( ключ, значение );
+    }
+        
     @Override
     public final Коллекция<DbГрафика> графики()
     {

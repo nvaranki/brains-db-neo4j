@@ -4,8 +4,10 @@ import com.varankin.brains.db.Транзакция;
 import com.varankin.brains.db.xml.ЗонныйКлюч;
 import com.varankin.util.LoggerX;
 
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.logging.Level;
+
 import org.neo4j.graphdb.*;
 
 import static com.varankin.brains.db.DbПреобразователь.toStringValue;
@@ -13,7 +15,7 @@ import static com.varankin.brains.db.DbПреобразователь.toStringVa
 /**
  * Объект на базе узла Neo4j.
  * 
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 abstract class NeoNode 
 {
@@ -38,15 +40,24 @@ abstract class NeoNode
         return Architect.getXmlEntry( NODE, замена );
     }
     
-    final Node getNodeURI() 
+    final String getNodeURI() 
     {
-        Relationship r = NODE.getSingleRelationship( NameSpace.Узел, Direction.INCOMING );
-        return r != null ? r.getStartNode() : null;
+        Node nsn = Architect.getLinkedNameSpace( NODE );
+        return nsn == null ? null : new NeoЗона( nsn ).uri(); // архив().namespaces().stream()... плохо масштабируется
+    }
+    
+    final NeoЗона зона() 
+    {
+        Node nsn = Architect.getLinkedNameSpace( NODE );
+        return nsn == null ? null : архив().namespaces().stream()
+            .map( зона -> (NeoЗона) зона )
+            .filter( зона -> Objects.equals( зона.getNode().getId(), nsn.getId() ) )
+            .findAny().orElse( null );
     }
     
     public final NeoАрхив архив()
     {
-        return Architect.getInstance().getArchive( NODE.getGraphDatabase() );
+        return ArchiveLocator.getInstance().getArchive( NODE.getGraphDatabase() );
     }
 
     public final Транзакция транзакция()
@@ -82,36 +93,54 @@ abstract class NeoNode
         return null;
     }
 
+    protected static Node createNode( ЗонныйКлюч ключ, GraphDatabaseService сервис )
+    {
+        Node node = сервис.createNode();
+        
+        if( ключ.НАЗВАНИЕ != null )
+        {
+            Architect.setXmlEntry( node, ключ.НАЗВАНИЕ );
+        }
+        return node;
+    }
+
     protected static Node createNodeInNameSpace( ЗонныйКлюч ключ, GraphDatabaseService сервис )
     {
         Node node = сервис.createNode();
         
-        // текущая или традиционная маркировка зоны не обязательна
         if( ключ.НАЗВАНИЕ != null )
         {
             Architect.setXmlEntry( node, ключ.НАЗВАНИЕ );
         }
         if( ключ.ЗОНА != null )
         {
-            NeoАрхив архив = Architect.getInstance().getArchive( сервис );
-            NeoЗона пи = (NeoЗона)архив.определитьПространствоИмен( ключ.ЗОНА, null );
-            пи.getNode().createRelationshipTo( node, NameSpace.Узел );
+            NeoАрхив архив = ArchiveLocator.getInstance().getArchive( сервис );
+            NeoЗона namespace = new ArrayList<>( архив.namespaces() ).stream()
+                .map( зона -> (NeoЗона) зона )
+                .filter( зона -> Objects.equals( зона.uri(), ключ.ЗОНА ) )
+                .findAny().orElseGet( () -> 
+                { 
+                    NeoЗона зона = new NeoЗона( сервис );
+                    зона.uri( ключ.ЗОНА );
+                    архив.namespaces().add( зона );
+                    return зона;
+                } );
+            Architect.linkNodeToNameSpace( node, namespace.getNode() );
         }
         return node;
     }
     
     protected final void validate( ЗонныйКлюч ключ )
     {
-        // ЗОНА
-        Node node = getNodeURI();
-        String uri = node != null ? new NeoЗона( node ).uri() : null;
-        if( !Objects.equals( ключ.ЗОНА, uri ) )
-            throw new IllegalArgumentException( LOGGER.text( "002001012S", uri, ключ.ЗОНА ) );
-        
         // НАЗВАНИЕ
         String name = getNodeName( null );
         if( !Objects.equals( ключ.НАЗВАНИЕ, name ) )
             throw new IllegalArgumentException( LOGGER.text( "002001013S", name, ключ.НАЗВАНИЕ ) );
+        
+        // ЗОНА
+        String uri = getNodeURI();
+        if( !Objects.equals( ключ.ЗОНА, uri ) )
+            throw new IllegalArgumentException( LOGGER.text( "002001012S", uri, ключ.ЗОНА ) );
     }
 
     /**

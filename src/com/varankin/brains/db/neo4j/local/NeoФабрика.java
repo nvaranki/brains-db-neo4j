@@ -15,7 +15,7 @@ import static com.varankin.brains.db.xml.XmlBrains.*;
 /**
  * Фабрика элементов базы данных для Neo4j.
  *
- * @author &copy; 2020 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 final class NeoФабрика
 {
@@ -28,54 +28,46 @@ final class NeoФабрика
         return ФАБРИКА;
     }
     
+    /**
+     * Создает новый элемент для включения в {@linkplain КоллекцияПоСвязи коллекции}.
+     * 
+     * @param ключ   идентификатор типа элемента.
+     * @param сервис менеджер базы данных.
+     * @return новый элемент.
+     */
     static NeoАтрибутный создать( ЗонныйКлюч ключ, GraphDatabaseService сервис )
     {
-        NeoАтрибутный э;
-        if( ключ.ЗОНА == null )
-            if( Xml.XML_CDATA.equals( ключ.НАЗВАНИЕ ) )
-            {
-                э = new NeoТекстовыйБлок( сервис );
-            }
-            else if( Xml.PI_ELEMENT.equals( ключ.НАЗВАНИЕ ) )
-            {
-                э = new NeoИнструкция( сервис );
-            }
-            else
-            {
-                э = new NeoУзел( сервис, ключ );
-            }
-        else if( XmlBrains.XMLNS_BRAINS.equals( ключ.ЗОНА ) )
+        NeoАтрибутный э = ключ.НАЗВАНИЕ == null ? 
+            new NeoУзел( сервис, ключ ) : 
             switch( ключ.НАЗВАНИЕ )
             {
-                case XmlBrains.XML_BRAINS:    э = new NeoПакет( сервис ); break;
-                case XmlBrains.XML_COMPUTE:   э = new NeoРасчет( сервис ); break;
-                case XmlBrains.XML_BASKET:    э = new NeoМусор( сервис ); break;
-                case XmlBrains.XML_FIELD:     э = new NeoПоле( сервис ); break;
-                case XmlBrains.XML_FRAGMENT:  э = new NeoФрагмент( сервис ); break;
-                case XmlBrains.XML_JAVA:      э = new NeoКлассJava( сервис ); break;
-                case XmlBrains.XML_JOINT:     э = new NeoСоединение( сервис ); break;
-                case XmlBrains.XML_LIBRARY:   э = new NeoБиблиотека( сервис ); break;
-                case XmlBrains.XML_MODULE:    э = new NeoМодуль( сервис ); break;
-                case XmlBrains.XML_NOTE:      э = new NeoЗаметка( сервис ); break;
-                case XmlBrains.XML_PARAMETER: э = new NeoПараметр( сервис ); break;
-                case XmlBrains.XML_PIN:       э = new NeoКонтакт( сервис ); break;
-                case XmlBrains.XML_POINT:     э = new NeoТочка( сервис ); break;
-                case XmlBrains.XML_PROCESSOR: э = new NeoПроцессор( сервис ); break;
-                case XmlBrains.XML_PROJECT:   э = new NeoПроект( сервис ); break;
-                case XmlBrains.XML_SENSOR:    э = new NeoСенсор( сервис ); break;
-                case XmlBrains.XML_SIGNAL:    э = new NeoСигнал( сервис ); break;
-                case XmlBrains.XML_TIMELINE:  э = new NeoЛента( сервис ); break;
-                default:                      э = new NeoУзел( сервис, ключ );
-            }
-        else if( XmlSvg.XMLNS_SVG.equals( ключ.ЗОНА ) )
-        {
-            // все элементы SVG
-            э = new NeoГрафика( сервис, ключ );
-        }
-        else
-        {
-            э = new NeoУзел( сервис, ключ );
-        }
+                case XmlBrains.XML_BRAINS    -> new NeoПакет( сервис ); 
+                case XmlBrains.XML_COMPUTE   -> new NeoРасчет( сервис );
+                case XmlBrains.XML_BASKET    -> new NeoМусор( сервис );
+                case XmlBrains.XML_FIELD     -> new NeoПоле( сервис );
+                case XmlBrains.XML_FRAGMENT  -> new NeoФрагмент( сервис );
+                case XmlBrains.XML_JAVA      -> new NeoКлассJava( сервис );
+                case XmlBrains.XML_JOINT     -> new NeoСоединение( сервис );
+                case XmlBrains.XML_LIBRARY   -> new NeoБиблиотека( сервис );
+                case XmlBrains.XML_MODULE    -> new NeoМодуль( сервис );
+                case XmlBrains.XML_NOTE      -> new NeoЗаметка( сервис );
+                case XmlBrains.XML_PARAMETER -> new NeoПараметр( сервис );
+                case XmlBrains.XML_PIN       -> new NeoКонтакт( сервис );
+                case XmlBrains.XML_POINT     -> new NeoТочка( сервис );
+                case XmlBrains.XML_PROCESSOR -> new NeoПроцессор( сервис );
+                case XmlBrains.XML_PROJECT   -> new NeoПроект( сервис );
+                case XmlBrains.XML_SENSOR    -> new NeoСенсор( сервис );
+                case XmlBrains.XML_SIGNAL    -> new NeoСигнал( сервис );
+                case XmlBrains.XML_TIMELINE  -> new NeoЛента( сервис );
+                case Xml.PI_ELEMENT          -> new NeoИнструкция( сервис );
+                case Xml.XML_CDATA           -> new NeoТекстовыйБлок( сервис );
+                case Xml.XMLNS_NS            -> new NeoЗона( сервис );
+                default                      -> XmlSvg.XMLNS_SVG.equals( ключ.ЗОНА ) ?
+                                                    // все элементы SVG, любое название
+                                                    new NeoГрафика( сервис, ключ ) : 
+                                                    // все именованное прочее
+                                                    new NeoУзел( сервис, ключ );  
+            };
         return э;
     }
     
@@ -113,6 +105,14 @@ final class NeoФабрика
             // все элементы SVG
             атр = new NeoГрафика( node );
         }
+        else if( Xml.XMLNS_XML.equals( uri ) )
+            атр = switch( Architect.getXmlEntry( node, "" ) )
+            {
+                // все элементы пространства имен
+                case Xml.XMLNS_NS -> new NeoЗона( node );
+                default           -> new NeoАтрибутный( node ) {};
+            }; 
+
         else
         {
             атр = new NeoУзел( node );

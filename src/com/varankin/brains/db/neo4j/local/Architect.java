@@ -12,12 +12,9 @@ import org.neo4j.graphdb.*;
 import org.neo4j.graphdb.event.TransactionData;
 import org.neo4j.graphdb.event.TransactionEventHandler;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
-import org.neo4j.graphdb.index.Index;
-import org.neo4j.graphdb.index.IndexManager;
 
 import static com.varankin.brains.db.DbПреобразователь.*;
 import static com.varankin.brains.db.xml.Xml.*;
-import com.varankin.brains.db.xml.type.XmlАрхив;
 import com.varankin.brains.db.xml.ЗонныйКлюч;
 
 /**
@@ -29,64 +26,36 @@ final class Architect
 {
     static private final LoggerX LOGGER = LoggerX.getLogger( Architect.class );
 
-    static final String INDEX_ARCHIVE = "tmi";
     static final String P_NODE_NAME = "#LNAME";
-    static final String MASTER_PROPERTY = "#tmp";
 
     static private final Architect ARCHITECT = new Architect();
     static final Architect getInstance() { return ARCHITECT; }
 
     private final static GraphDatabaseFactory ФАБРИКА_БД = new GraphDatabaseFactory();
-    private final Collection<NeoАрхив> АРХИВЫ;
     
     private Architect() 
     {
-        АРХИВЫ = new ArrayList<>();
     }
     
-    static GraphDatabaseService openEmbeddedService( String dbpath, Map<String,String> ca )
+    static GraphDatabaseService openEmbeddedService( File dbpath )
     {
-        boolean новая = !new File( dbpath ).exists() || !new File( dbpath, "neostore" ).exists();
-        GraphDatabaseService сервис;
-        сервис = ФАБРИКА_БД.newEmbeddedDatabase( new File( dbpath ) );
+        boolean новая = !dbpath.exists() || !new File( dbpath, "neostore" ).exists();
+        GraphDatabaseService сервис = ФАБРИКА_БД.newEmbeddedDatabase( dbpath );
         Runtime.getRuntime().addShutdownHook( new Thread( () -> сервис.shutdown() ) );
-        try( Transaction t = сервис.beginTx() )
-        {
-            Architect.initIndexes( сервис, ca );
-            t.success();
-            if( новая )
-                LOGGER.log( Level.INFO, "002001014I", dbpath );
-        }
+        if( новая )
+            LOGGER.log( Level.INFO, "002001014I", dbpath.getAbsolutePath() );
         return сервис;
     }
     
-    NeoАрхив getArchive( GraphDatabaseService сервис )
+    /**
+     * Регистрирует обработчики транзакционных событий.
+     * 
+     * @param сервис
+     * @param обработчик действие для выполнения непосредственно перед завершением транзакции.
+     */
+    static void registerTransactionEventHandler( GraphDatabaseService сервис, Consumer<Long> обработчик )
     {
-        for( NeoАрхив архив : АРХИВЫ )
-            if( архив.getNode().getGraphDatabase().equals( сервис ) )
-                return архив;
-        throw new NoSuchElementException( "No archive found for the Neo4j service " + сервис );
-    }
-    
-    void unregisterArchive( NeoАрхив архив )
-    {
-        try
-        {
-            архив.getNode().getGraphDatabase().shutdown();
-        }
-        finally
-        {
-            АРХИВЫ.remove( архив );
-        }
-    }
-    
-    void registerNewArchive( NeoАрхив архив, Consumer<Long> обработчик )
-    {
-        GraphDatabaseService сервис = архив.getNode().getGraphDatabase();
-        for( NeoАрхив а : АРХИВЫ )
-            if( сервис.equals( а.getNode().getGraphDatabase() ) )
-                throw new IllegalStateException( "Duplicate archive" );
-        архив.getNode().getGraphDatabase().registerTransactionEventHandler( new TransactionEventHandler<Void>() 
+        сервис.registerTransactionEventHandler( new TransactionEventHandler<Void>() 
         {
             @Override
             public Void beforeCommit( TransactionData td ) throws Exception 
@@ -102,45 +71,10 @@ final class Architect
             public void afterRollback( TransactionData td, Void t ) {}
             
         } );
-        АРХИВЫ.add( архив );
     }
     
     //<editor-fold defaultstate="collapsed" desc="nodes">
-    
-    static Node createArchiveNode( GraphDatabaseService сервис )
-    {
-        Node node = сервис.createNode();
-        Long ts = System.currentTimeMillis();
-        node.setProperty( P_NODE_NAME, XmlBrains.XML_ARHIVE.toCharArray() );
-        node.setProperty( XmlАрхив.КЛЮЧ_А_СОЗДАН.НАЗВАНИЕ, ts );
 
-        node.setProperty( MASTER_PROPERTY, ts );
-        Architect.indexArchiveNode( node, ts );
-
-        LOGGER.log( Level.CONFIG, "002001011C" );
-        return node;
-    }
-
-    static Node findSingleNode( GraphDatabaseService сервис, String id )
-    {
-        Map<Long,Node> masters = new TreeMap<>();
-        Index<Node> индекс = сервис.index().forNodes( id );
-        for( Node n : индекс.query( MASTER_PROPERTY, "*" ) )
-            masters.put( toLongValue( 
-                n.getProperty( MASTER_PROPERTY, System.currentTimeMillis() ) ), n );
-        Optional<Node> first = masters.values().stream().findFirst();
-        if( first.isPresent() )
-        {
-            if( masters.size() > 1 )
-                LOGGER.log( Level.SEVERE, "002001002S", masters.size() );
-            return first.get();
-        }
-        else
-        {
-            return null;
-        }
-    }
-    
     static boolean testNodeToParent( Node node, Node parent, RelationshipType type )
     {
         Relationship relationship = null;
@@ -163,6 +97,24 @@ final class Architect
         return relationship == null;
     }
     
+    static Node getLinkedNameSpace( Node node )
+    {
+        Relationship r = node.getSingleRelationship( NameSpace.Узел, Direction.INCOMING );
+        return r != null ? r.getStartNode() : null;
+    }
+    
+    static void linkNodeToNameSpace( Node node, Node nsn )
+    {
+        nsn.createRelationshipTo( node, NameSpace.Узел );
+    }
+
+    static void unlinkNodeFromNameSpace( Node node, Node nsn )
+    {
+        for( Relationship r : node.getRelationships( Direction.INCOMING, NameSpace.Узел ) )
+            if( r.getStartNode().getId() == nsn.getId() )
+                r.delete();
+    }
+
     static Relationship linkNodeToParent( Node node, Node parent, RelationshipType type )
     {
         return parent.createRelationshipTo( node, type );
@@ -220,35 +172,6 @@ final class Architect
         if( loggable ) LOGGER.log( Level.FINEST, "Removing node {0} id={1}", 
                 new Object[]{nodeName,node.getId()} );
         node.delete();
-    }
-    
-    //</editor-fold>
-    
-    //<editor-fold defaultstate="collapsed" desc="indexing">
-    
-    private static final Map<String,String> imap;
-    static
-    {
-        imap = new HashMap<>();
-        imap.put( INDEX_ARCHIVE, MASTER_PROPERTY ); // per timestamp
-    }
-    
-    static void initIndexes( GraphDatabaseService сервис, Map<String,String> ca )
-    {
-        IndexManager им = сервис.index();
-        if( !им.existsForNodes( INDEX_ARCHIVE ) )
-            им.forNodes( INDEX_ARCHIVE, ca );
-    }
-    
-    static void indexArchiveNode( Node node, Long timestamp )
-    {
-        indexNode( node, INDEX_ARCHIVE, timestamp );
-    }
-    
-    private static void indexNode( Node node, String indexId, Object property )
-    {
-        Index<Node> индекс = node.getGraphDatabase().index().forNodes( indexId );
-        индекс.add( node, imap.get( indexId ), property );
     }
     
     //</editor-fold>
@@ -343,7 +266,7 @@ final class Architect
             if( r == null && создать )
             {
                 // только в режиме "создать"! иначе - блокировка транзакции из-за циклического ожидания разрешения на запись
-                NeoАрхив архив = getInstance().getArchive( узел.getGraphDatabase() );
+                NeoАрхив архив = ArchiveLocator.getInstance().getArchive( узел.getGraphDatabase() );
                 NeoЗона пи = (NeoЗона)архив.определитьПространствоИмен( uri, null );
                 r = пи.getNode().createRelationshipTo( узел, NameSpace.Атрибут );
             }

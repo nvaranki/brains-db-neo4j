@@ -9,7 +9,6 @@ import org.neo4j.graphdb.Node;
 
 import static com.varankin.brains.db.neo4j.local.NeoNode.createNodeInNameSpace;
 import com.varankin.brains.db.type.DbАтрибутный;
-import com.varankin.brains.db.xml.АтрибутныйКлюч;
 import com.varankin.brains.db.xml.ЗонныйКлюч;
 
 /**
@@ -40,12 +39,6 @@ class NeoУзел extends NeoАтрибутный implements DbУзел
         ИНСТРУКЦИИ = new КоллекцияПоСвязи<>( node, Связь.Инструкция, NeoИнструкция::new );
         ТЕКСТЫ = new КоллекцияПоСвязи<>( node, Связь.Текст, NeoТекстовыйБлок::new );
         ПРОЧЕЕ = new КоллекцияПоСвязи<>( node, Связь.Прочее, NeoУзел::new );
-    }
-
-    @Override
-    public АтрибутныйКлюч тип() 
-    {
-        throw new UnsupportedOperationException( NeoУзел.class.getName() );
     }
 
     @Override

@@ -18,7 +18,7 @@ import static com.varankin.brains.db.DbПреобразователь.*;
  * Процессор инструкций XML (Processing Instructions) типа XPath для Neo4j.
  * Обрабатывает ограниченный набор XML элементов типа {@literal <?target instruction ?> }.
  *
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 class XPathProcessor implements PiProcessor<Node> 
 {
@@ -116,7 +116,7 @@ class XPathProcessor implements PiProcessor<Node>
         else
         {
             String uri = null;
-            for( DbЗона ns : Architect.getInstance().getArchive( node.getGraphDatabase() ).namespaces() )
+            for( DbЗона ns : ArchiveLocator.getInstance().getArchive( node.getGraphDatabase() ).namespaces() )
                 if( ns.варианты().contains( prefix ) )
                     if( uri == null )
                         uri = ns.uri();

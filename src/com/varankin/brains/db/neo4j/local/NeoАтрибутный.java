@@ -54,16 +54,10 @@ abstract class NeoАтрибутный extends NeoNode implements DbАтрибу
     }
 
     @Override
-    public АтрибутныйКлюч тип() 
+    public АтрибутныйКлюч тип()
     {
         String name = getNodeName( null );
-        String uri = null;
-        Node node = getNodeURI();
-        if( node != null )
-        {
-            NeoЗона ns = new NeoЗона( node );
-            uri = ns.uri();
-        }
+        String uri = getNodeURI();
         return new АтрибутныйКлюч( name, uri ); //TODO normally get from XmlXXX interfaces
     }
 
