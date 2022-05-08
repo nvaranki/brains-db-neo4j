@@ -34,9 +34,9 @@ abstract class NeoNode
         return NODE;
     }
 
-    final String getNodeName( String замена )
+    final String getNodeName()
     {
-        return Architect.getXmlEntry( NODE, замена );
+        return Architect.getXmlEntry( NODE, null );
     }
     
     final String getNodeURI() 
@@ -132,7 +132,7 @@ abstract class NeoNode
     protected final void validate( ЗонныйКлюч ключ )
     {
         // НАЗВАНИЕ
-        String name = getNodeName( null );
+        String name = getNodeName();
         if( !Objects.equals( ключ.НАЗВАНИЕ, name ) )
             throw new IllegalArgumentException( LOGGER.text( "002001013S", name, ключ.НАЗВАНИЕ ) );
         
