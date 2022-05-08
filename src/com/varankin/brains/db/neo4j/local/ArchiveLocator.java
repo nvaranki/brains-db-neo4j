@@ -17,7 +17,7 @@ import org.neo4j.graphdb.index.IndexHits;
 import org.neo4j.graphdb.index.IndexManager;
 
 /**
- * Менеджер архивного узла for Neo4j&trade;.
+ * Менеджер архивного узла для Neo4j&trade;.
  * База данных хранит единственный экземпляр архивного узла.
  * 
  * @author &copy; 2022 Николай Варанкин
@@ -114,7 +114,7 @@ final class ArchiveLocator
      * Ищет коренной узел данного архива. 
      * 
      * @param index  индекс БД для архивного узла.
-     * @return коренной узел архива или {code null}.
+     * @return коренной узел архива или {@code null}.
      */
     private static Node findArchiveNode( Index<Node> индекс )
     {

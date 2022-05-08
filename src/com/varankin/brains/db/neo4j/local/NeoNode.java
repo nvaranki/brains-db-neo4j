@@ -92,17 +92,6 @@ abstract class NeoNode
         return null;
     }
 
-    protected static Node createNode( ЗонныйКлюч ключ, GraphDatabaseService сервис )
-    {
-        Node node = сервис.createNode();
-        
-        if( ключ.НАЗВАНИЕ != null )
-        {
-            Architect.setXmlEntry( node, ключ.НАЗВАНИЕ );
-        }
-        return node;
-    }
-
     protected static Node createNodeInNameSpace( ЗонныйКлюч ключ, GraphDatabaseService сервис )
     {
         Node node = сервис.createNode();
