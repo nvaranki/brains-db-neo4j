@@ -8,6 +8,7 @@ import java.util.logging.*;
 import org.neo4j.graphdb.*;
 
 import static com.varankin.brains.db.DbПреобразователь.toStringValue;
+import com.varankin.util.LoggerX;
 
 /**
  * Процессор ссылок в стандарте {@literal Xlink}. 
@@ -15,11 +16,12 @@ import static com.varankin.brains.db.DbПреобразователь.toStringVa
  * 
  * @see <a href="http://www.w3.org/TR/xlink11/">XML Linking Language (XLink) Version 1.1</a>
  *
- * @author &copy; 2021 Николай Варанкин
+ * @author &copy; 2022 Николай Варанкин
  */
 class XLinkProcessor
 {
     private static final Logger LOGGER = Logger.getLogger( XLinkProcessor.class.getName() );
+    private static final LoggerX LOGGER_X = LoggerX.getLogger( XLinkProcessor.class );
     
     private static final String PATH_SEPARATOR = "/";
     private static final String PATH_ROOT = "/";
@@ -60,7 +62,7 @@ class XLinkProcessor
         if( ссылка == null )
         {
             LOGGER.log( Level.SEVERE, "Unsupported reference (null) on node {0}.", 
-                    название( node) );
+                    название( node ) );
             return null;//node;
         }
         
@@ -192,6 +194,37 @@ class XLinkProcessor
                                     ссылка != null && ссылка.startsWith( QUERY ) ? ссылка : "" } );
             return null;
         }
+    }
+    
+    /**
+     * Возвращает узел, на который ссылается заданный узел.
+     * 
+     * @param ссылка ссылка на узел пакета в стандарте XLink.
+     * @param референт  узел-источник ссылки.
+     * @param положение адрес узла.
+     * @return найденный объект или {@code null}.
+     */
+    Node xlink( String ссылка, Node референт, String положение )
+    {
+        Node node = resolve( референт, ссылка );
+        if( node == null )
+        {
+            LOGGER_X.log( Level.SEVERE, "002001006S", 
+                new Object[]{ положение, ссылка } );
+        }
+        else if( node.equals( референт ) )
+        {
+            LOGGER_X.log( Level.SEVERE, "002001007S", 
+                new Object[]{ положение, ссылка } );
+            node = null;
+        }
+        if( node == null ) 
+            return null;
+        else if( Objects.equals( Architect.getXmlEntry( референт, null ), 
+                                 Architect.getXmlEntry( node, null ) ) )
+            return new LinkedNode( референт, node );
+        else
+            return node; //TODO [fragment's] return node != null ? new LinkedNode( референт, node ) : null;
     }
     
     private static Object unquote( String string )

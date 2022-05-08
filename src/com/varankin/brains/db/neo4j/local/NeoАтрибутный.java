@@ -230,9 +230,19 @@ abstract class NeoАтрибутный extends NeoNode implements DbАтрибу
      */
     <T extends DbАтрибутный> T xlink( String ссылка, Class<T> класс, String положение )
     {
+        if( ссылка == null )
+        {
+            //TODO LOGGER.debug( Level.SEVERE, "002001...S" );
+            return null;
+        }
         NeoПакет пакет = пакет();
         XLinkProcessor p = пакет != null ? пакет.xLinkProcessor() : null;
-        Node node = xlink( ссылка, p, положение );
+        if( p == null )
+        {
+            LOGGER.log( Level.SEVERE, "002001018S" );
+            return null;
+        }
+        Node node = p.xlink( ссылка, getNode(), положение );
         if( node == null ) return null;
         NeoАтрибутный атр = NeoФабрика.создать( node );
         if( класс.isInstance( атр ) )

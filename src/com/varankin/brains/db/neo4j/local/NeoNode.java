@@ -6,7 +6,6 @@ import com.varankin.util.LoggerX;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.logging.Level;
 
 import org.neo4j.graphdb.*;
 
@@ -143,40 +142,4 @@ abstract class NeoNode
             throw new IllegalArgumentException( LOGGER.text( "002001012S", uri, ключ.ЗОНА ) );
     }
 
-    /**
-     * Возвращает узел, на который ссылается данный узел.
-     * 
-     * @param ссылка ссылка на узел пакета в стандарте XLink.
-     * @param p      процессор XLink.
-     * @param положение адрес узла.
-     * @return найденный объект или {@code null}.
-     */
-    Node xlink( String ссылка, XLinkProcessor p, String положение )
-    {
-        if( ссылка == null ) return null;
-        Node node = null;
-        if( p == null )
-        {
-            LOGGER.log( Level.SEVERE, "002001018S" );
-        }
-        else if( ( node = p.resolve( NODE, ссылка ) ) == null )
-        {
-            LOGGER.log( Level.SEVERE, "002001006S", 
-                new Object[]{ положение, ссылка } );
-        }
-        else if( node.equals( NODE ) )
-        {
-            LOGGER.log( Level.SEVERE, "002001007S", 
-                new Object[]{ положение, ссылка } );
-            node = null;
-        }
-        if( node == null ) 
-            return null;
-        else if( Objects.equals( Architect.getXmlEntry( NODE, null ), 
-                                 Architect.getXmlEntry( node, null ) ) )
-            return new LinkedNode( NODE, node );
-        else
-            return node; //TODO [fragment's] return node != null ? new LinkedNode( NODE, node ) : null;
-    }
-    
 }
