@@ -1,5 +1,6 @@
 package com.varankin.brains.db.neo4j.local;
 
+import com.varankin.brains.db.xml.ЗонныйКлюч;
 import com.varankin.brains.db.xml.XmlBrains;
 import com.varankin.filter.*;
 import com.varankin.util.*;
@@ -7,6 +8,7 @@ import com.varankin.util.*;
 import java.io.File;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.logging.*;
 import org.neo4j.graphdb.*;
 import org.neo4j.graphdb.event.TransactionData;
@@ -15,7 +17,6 @@ import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 
 import static com.varankin.brains.db.DbПреобразователь.*;
 import static com.varankin.brains.db.xml.Xml.*;
-import com.varankin.brains.db.xml.ЗонныйКлюч;
 
 /**
  * Utility container for Neo4j&trade;.
@@ -193,7 +194,7 @@ final class Architect
 
     static Iterable<ЗонныйКлюч> getLocalPropertyKeys( final Node node )
     {
-        Фильтр<ЗонныйКлюч> фильтр = (ключ) -> 
+        Predicate<ЗонныйКлюч> фильтр = (ключ) -> 
         {
             String название = ключ.НАЗВАНИЕ;
             return название != null && !( название.startsWith( "#" ) );
@@ -215,7 +216,7 @@ final class Architect
     
     static Iterable<ЗонныйКлюч> getForeignPropertyKeys( final Node node )
     {
-        Фильтр<ЗонныйКлюч> фильтр = (ключ) -> !XML_XMLNS.equals( ключ.НАЗВАНИЕ );
+        Predicate<ЗонныйКлюч> фильтр = (ключ) -> !XML_XMLNS.equals( ключ.НАЗВАНИЕ );
         return new FilteredIterable<>( () -> new ForeignPropertyKeysIterator(
                 node.getRelationships( NameSpace.Атрибут, Direction.INCOMING ).iterator() ), фильтр );
     }
