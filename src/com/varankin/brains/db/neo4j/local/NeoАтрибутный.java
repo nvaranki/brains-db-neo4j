@@ -140,10 +140,12 @@ abstract class NeoАтрибутный extends NeoNode implements DbАтрибу
     protected String положение( String разделитель, String[][] поиск )
     {
         StringBuilder значение = new StringBuilder( именованныйТип( поиск ) );
-        значение.insert( 0, разделитель );
         NeoАтрибутный предок = предок();
         if( предок != null )
+        {
+            значение.insert( 0, разделитель );
             значение.insert( 0, предок.положение( разделитель ) );
+        }
         return значение.toString();
     }
 
