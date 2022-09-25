@@ -8,7 +8,7 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 
 /**
- * Сигнал, формируемый по результату расчета когнитивной функции, в Neo4j.
+ * Сигнал, получаемый извне или формируемый собственным генератором, в Neo4j.
  * 
  * @author &copy; 2022 Николай Варанкин
  */

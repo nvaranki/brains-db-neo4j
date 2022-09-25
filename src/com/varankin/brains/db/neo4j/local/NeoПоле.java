@@ -28,7 +28,7 @@ final class NeoПоле extends NeoЭлементК implements DbПоле, XmlП
     NeoПоле( Node node )
     {
         super( КЛЮЧ_Э_ПОЛЕ, node );
-        СЕНСОРЫ = new КоллекцияПоСвязи<>( node, Связь.Сигнал, NeoСенсор::new );
+        СЕНСОРЫ = new КоллекцияПоСвязи<>( node, Связь.Сенсор, NeoСенсор::new );
     }
 
     @Override
