@@ -1,5 +1,7 @@
 package com.varankin.brains.db.neo4j.local;
 
+import static com.varankin.brains.db.DbПреобразователь.toStringValue;
+import static com.varankin.brains.db.neo4j.local.NeoАтрибутный.trimToCharArray;
 import com.varankin.brains.db.type.DbПроект;
 import com.varankin.brains.db.xml.type.XmlПроект;
 import com.varankin.brains.db.xml.АтрибутныйКлюч;
@@ -30,6 +32,18 @@ final class NeoПроект extends NeoЭлементФ implements DbПроек�
     public АтрибутныйКлюч тип() 
     {
         return КЛЮЧ_Э_ПРОЕКТ;
+    }
+
+    @Override
+    public String процессор()
+    {
+        return toStringValue( атрибут( КЛЮЧ_А_ПРОЦЕССОР, null ) );
+    }
+
+    @Override
+    public void процессор( String значение )
+    {
+        определить( КЛЮЧ_А_ПРОЦЕССОР, trimToCharArray( значение ) );
     }
 
 }
