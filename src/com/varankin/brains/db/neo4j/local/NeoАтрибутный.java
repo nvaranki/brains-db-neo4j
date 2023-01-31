@@ -36,7 +36,7 @@ import static com.varankin.brains.db.xml.XmlBrains.XML_BRAINS;
 /**
  * Атрибутный узел графа в Neo4j.
  * 
- * @author &copy; 2022 Николай Варанкин
+ * @author &copy; 2023 Николай Варанкин
  */
 abstract class NeoАтрибутный extends NeoNode implements DbАтрибутный 
 {
@@ -88,6 +88,12 @@ abstract class NeoАтрибутный extends NeoNode implements DbАтрибу
             return нет;
     }
 
+    @Override
+    public String отметка()
+    {
+        return String.format( "%016X", getNode().getId() );
+    }
+    
     /**
      * Возвращает локальное название узла.
      * 
