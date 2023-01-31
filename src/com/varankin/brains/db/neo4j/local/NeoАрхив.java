@@ -26,7 +26,7 @@ import static com.varankin.brains.db.neo4j.local.NeoАтрибутный.trimToC
 /**
  * Архив мыслительных структур на базе Neo4j.
  *
- * @author &copy; 2022 Николай Варанкин
+ * @author &copy; 2023 Николай Варанкин
  */
 public final class NeoАрхив extends NeoАтрибутный implements DbАрхив, XmlАрхив
 {
@@ -40,18 +40,19 @@ public final class NeoАрхив extends NeoАтрибутный implements DbА
     
     /**
      * @param путь расположение хранилища Neo4j в локальной файловой системе.
+     * @param новый создать новый архив, {@code null} - создать автоматически.
      * @param кАрх конфигурация индекса архивов.
      * @throws java.lang.Exception при ошибках.
      */
-    public NeoАрхив( File путь, Map<String, String> кАрх ) throws Exception
+    public NeoАрхив( File путь, Boolean новый, Map<String, String> кАрх ) throws Exception
     {
-        this( ArchiveLocator.obtainArchiveNode( Architect.openEmbeddedService( путь ), кАрх ), 
-               путь.getAbsolutePath(), null );
+        this( ArchiveLocator.obtainArchiveNode( Architect.openEmbeddedService( путь, новый ), кАрх ), 
+               путь.getAbsolutePath() );
         Architect.registerTransactionEventHandler( getNode().getGraphDatabase(), this::изменен );
         ArchiveLocator.getInstance().registerNewArchive( NeoАрхив.this );
     }
 
-    private NeoАрхив( Node node, String расположение, Object java15_0_1_defect ) //TODO java15_0_1_defect, see ОткрытьЛокальныйАрхивNeo4j
+    private NeoАрхив( Node node, String расположение ) //TODO java15_0_1_defect on same number of params in constructors, see ОткрытьЛокальныйАрхивNeo4j
     {
         super( node );
         ПАКЕТЫ = new КоллекцияПоСвязи<>( node, Связь.Пакет, NeoПакет::new );

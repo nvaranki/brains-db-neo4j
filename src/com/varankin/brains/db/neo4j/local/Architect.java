@@ -21,7 +21,7 @@ import static com.varankin.brains.db.xml.Xml.*;
 /**
  * Utility container for Neo4j&trade;.
  * 
- * @author &copy; 2022 Николай Варанкин
+ * @author &copy; 2023 Николай Варанкин
  */
 final class Architect
 {
@@ -38,9 +38,11 @@ final class Architect
     {
     }
     
-    static GraphDatabaseService openEmbeddedService( File dbpath )
+    static GraphDatabaseService openEmbeddedService( File dbpath, Boolean create )
     {
         boolean новая = !dbpath.exists() || !new File( dbpath, "neostore" ).exists();
+        if( create != null && ( create ^ новая ) )
+            throw new IllegalArgumentException( LOGGER.text( create ? "002001019S" : "002001020S", dbpath.getAbsolutePath() ) );
         GraphDatabaseService сервис = ФАБРИКА_БД.newEmbeddedDatabase( dbpath );
         Runtime.getRuntime().addShutdownHook( new Thread( () -> сервис.shutdown() ) );
         if( новая )
