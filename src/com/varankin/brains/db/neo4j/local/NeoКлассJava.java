@@ -15,7 +15,7 @@ import static com.varankin.brains.db.DbПреобразователь.*;
  * Выполняет функции элемента мыслительной структуры, в 
  * которую он вложен. 
  *
- * @author &copy; 2022 Николай Варанкин
+ * @author &copy; 2023 Николай Варанкин
  */
 final class NeoКлассJava extends NeoЭлемент implements DbКлассJava, XmlКлассJava
 {
@@ -51,6 +51,18 @@ final class NeoКлассJava extends NeoЭлемент implements DbКлассJ
     public String код()
     {
         return DbТекстовыйБлок.текст( тексты(), "\n" );
+    }
+
+    @Override
+    public String опции() 
+    {
+        return toStringValue( атрибут( КЛЮЧ_А_ОПЦИИ, null ) );
+    }
+    
+    @Override
+    public void опции( String значение )
+    {
+        определить( КЛЮЧ_А_ОПЦИИ, trimToCharArray( значение ) );
     }
 
     @Override
